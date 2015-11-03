@@ -32,7 +32,7 @@ public class CharacterManager
 	}
 
 
-	public void FixedUpdate()
+	public void Update()
 	{
 		m_pHeroesBUS[m_iSelectedHero].CatchInputs();
 	}
@@ -46,5 +46,10 @@ public class CharacterManager
 	public Character[] HeroesBUS
 	{
 		get { return m_pHeroesBUS; }
+	}
+
+	public Vector3 SelectedHeroPos
+	{
+		get { return m_pHeroesPRES[m_iSelectedHero].transform.position; }
 	}
 }

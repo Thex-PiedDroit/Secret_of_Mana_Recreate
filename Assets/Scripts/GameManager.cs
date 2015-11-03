@@ -32,9 +32,9 @@ public class GameManager : MonoBehaviour
 		CreateHeroes();
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
-		m_pCharacManager.FixedUpdate();
+		m_pCharacManager.Update();
 	}
 
 
