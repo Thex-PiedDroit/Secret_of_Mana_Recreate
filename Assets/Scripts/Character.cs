@@ -5,7 +5,7 @@ public class Character
 {
 #region Variables (private)
 
-	private VisualCharacter m_pCharacter = null;
+	private VisualCharacter m_pCharacterPRES = null;
 
 	private string m_pName = "Anon";
 
@@ -19,15 +19,15 @@ public class Character
 	
 	#endregion
 
-	public Character(string pName, VisualCharacter pCharacter)
+	public Character(string pName, VisualCharacter pCharacterPRES)
 	{
 		m_pName = pName;
-		m_pCharacter = pCharacter;
+		m_pCharacterPRES = pCharacterPRES;
 	}
 
 #region Methods
 
-	public void FixedUpdate()
+	public void CatchInputs()
 	{
 		float fMoveV = Input.GetAxis("Vertical");
 		float fMoveH = Input.GetAxis("Horizontal");
@@ -40,19 +40,14 @@ public class Character
 				tMove.Normalize();
 			tMove *= m_fSpeed;
 
-			m_pCharacter.Forward = tMove;
-			m_pCharacter.transform.Translate(tMove * Time.deltaTime, Space.World);
+			m_pCharacterPRES.Forward = tMove;
+			m_pCharacterPRES.transform.Translate(tMove * Time.deltaTime, Space.World);
 		}
 
 		if (Input.GetButtonDown("Hit"))
 		{
-			m_pCharacter.Attack();
+			m_pCharacterPRES.AttackAnim();
 		}
-	}
-
-	public void Update()
-	{
-
 	}
 
 	#endregion Methods

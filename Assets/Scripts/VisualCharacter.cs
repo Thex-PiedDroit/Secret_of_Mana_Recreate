@@ -15,27 +15,18 @@ public class VisualCharacter : MonoBehaviour
 	
 	#region Variables (private)
 
-	private Character m_pCharacter = null;
+	private Character m_pCharacterBUS = null;
 	
 	#endregion
 
 
-	void Start()
+	public VisualCharacter()
 	{
-		m_pCharacter = new Character(m_pName, this);	// I'm not sure how else i could send a custom name to the Character
-	}
-
-	void FixedUpdate()
-	{
-		m_pCharacter.FixedUpdate();
+		m_pCharacterBUS = new Character(m_pName, this);	// I'm not sure how else i could send a custom name to the Character without asking in game
 	}
 	
-	void Update()
-	{
-		m_pCharacter.Update();
-	}
 
-	public void Attack()
+	public void AttackAnim()
 	{
 		m_pAttackAnim.Play();
 	}
@@ -45,5 +36,10 @@ public class VisualCharacter : MonoBehaviour
 	{
 		set { transform.forward = value; }
 		get { return transform.forward; }
+	}
+
+	public Character CharacterBUS
+	{
+		get { return m_pCharacterBUS; }
 	}
 }
