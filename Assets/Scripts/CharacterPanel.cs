@@ -47,6 +47,14 @@ public class CharacterPanel : ManaPanel
 	}
 
 
+	public override void CatchOpenInput()
+	{
+		base.CatchOpenInput();
+
+		if (Input.GetButtonDown("Select"))
+			SelectHero();
+	}
+
 	public void SelectHero()
 	{
 		GameManager.Inst.CharManager.SelectHero(m_iCurrentPage);

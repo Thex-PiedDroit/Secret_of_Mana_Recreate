@@ -29,13 +29,28 @@ public abstract class ManaPanel : MonoBehaviour
 		s_pCharacters = GameManager.Inst.CharManager.VisualCharactersList;
 	}
 
-	public void CatchOpenInput()
+	virtual public void CatchOpenInput()
 	{
 		if (Input.GetButtonDown(m_pOpenButton))
 		{
-			m_bOpened = !m_bOpened;
-			GameManager.Inst.UIManager.TogglePanel(this, m_bOpened);
+			OpenClose();
 		}
+
+		if (m_bOpened)
+		{
+			if (Input.GetButtonDown("Cancel"))
+				OpenClose();
+			else if (Input.GetButtonDown("Right"))
+				ChangePage(true);
+			else if (Input.GetButtonDown("Left"))
+				ChangePage(false);
+		}
+	}
+
+	void OpenClose()
+	{
+		m_bOpened = !m_bOpened;
+		GameManager.Inst.UIManager.TogglePanel(this, m_bOpened);
 	}
 
 	public void ChangePage(bool bNext)
