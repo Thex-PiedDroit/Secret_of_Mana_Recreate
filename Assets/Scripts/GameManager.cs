@@ -18,7 +18,13 @@ public class GameManager : MonoBehaviour
 	
 	#endregion
 
-
+    public CharacterManager CharManager
+    {
+        get
+        {
+            return m_pCharacManager;
+        }
+    }
 	static public GameManager Inst
 	{
 		get { return s_pInst; }
@@ -28,7 +34,7 @@ public class GameManager : MonoBehaviour
 	{
 		s_pInst = this;
 
-		m_pCharacManager = CharacterManager.Inst;
+		m_pCharacManager = new CharacterManager(); // doesn't need to be singleton
 		CreateHeroes();
 	}
 
@@ -40,6 +46,7 @@ public class GameManager : MonoBehaviour
 
 	public void CreateHeroes()
 	{
+        /*
 		VisualCharacter[] pCharactersPRES = m_pCharacManager.HeroesPRES;
 		Character[] pCharactersBUS = m_pCharacManager.HeroesBUS;
 		for (int i = 0; i < pCharactersPRES.Length; i++)
@@ -47,5 +54,6 @@ public class GameManager : MonoBehaviour
 			pCharactersPRES[i] = Instantiate(pCharactersPRES[i], Vector3.back * i, Quaternion.identity) as VisualCharacter;
 			pCharactersBUS[i] = pCharactersPRES[i].CharacterBUS;
 		}
+        /**/
 	}
 }

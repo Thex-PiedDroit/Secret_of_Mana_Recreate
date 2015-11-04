@@ -21,12 +21,31 @@ public class VisualCharacter : MonoBehaviour
 	
 	#endregion
 
-
-	public VisualCharacter()
+    //MonoBehaviour object can't have constructors, you need to create Init method instead
+	public void Initialise(Character character)
 	{
-		m_pCharacterBUS = new Character(m_pName, this);	// I'm not sure how else i could send a custom name to the Character without asking in game
-	}
+        //VisualCharacter shouldn't create the logical one
+        //Character should be created in the CharacterManager and the VisualCharacter should either be created in same place (kept in separate lists) or in the GameManager
+        //m_pCharacterBUS = new Character(m_pName, this);	// I'm not sure how else i could send a custom name to the Character without asking in game
+
+        m_pCharacterBUS = character;
+        m_pCharacterBUS.OnHitTaken += AttackAnim; //this is how you register for an event
+        transform.position = m_pCharacterBUS.Position;
+    }
 	
+    void OnDestroy()
+    {
+        m_pCharacterBUS.OnHitTaken -= AttackAnim; //unregister on destroy to avoid any null exceptions
+    }
+    void Update()
+    {
+        transform.forward = m_pCharacterBUS.Forward;
+        m_pNavMeshAgent.SetDestination(m_pCharacterBUS.Destination);
+        if (m_pCharacterBUS.Selected)
+        {
+            transform.position = m_pCharacterBUS.Position;
+        }
+    }
 
 	public void AttackAnim()
 	{

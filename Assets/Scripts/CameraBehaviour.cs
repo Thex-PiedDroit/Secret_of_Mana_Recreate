@@ -21,12 +21,15 @@ public class CameraBehaviour : MonoBehaviour
 
 	void Start()
 	{
-		pCharacManager = CharacterManager.Inst;
+		pCharacManager = GameManager.Inst.CharManager;
 	}
 
 	void LateUpdate()
 	{
-		Vector3 tHeroPos = pCharacManager.SelectedHeroPos;
-		transform.position = Vector3.Lerp(transform.position, tHeroPos + m_tOffset, m_fFollowSpeed * Time.deltaTime);
+        Character hero = pCharacManager.SelectedHero;
+        if (hero != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, hero.Position + m_tOffset, m_fFollowSpeed * Time.deltaTime);
+        }
 	}
 }
