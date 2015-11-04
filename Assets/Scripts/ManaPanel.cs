@@ -50,6 +50,8 @@ public abstract class ManaPanel : MonoBehaviour
 	abstract public void Refresh();
 
 
+#region Getters/Setters
+
 	protected VisualCharacter CurrentChar
 	{
 		get { return s_pCharacters[m_iCurrentPage]; }
@@ -60,4 +62,6 @@ public abstract class ManaPanel : MonoBehaviour
 		set { gameObject.SetActive(value); }
 		get { return gameObject.activeSelf; }
 	}
+
+	#endregion Getters/Setters
 }

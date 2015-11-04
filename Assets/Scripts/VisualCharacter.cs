@@ -3,7 +3,7 @@ using System.Collections;
 
 public class VisualCharacter : MonoBehaviour
 {
-	#region Variables (public)
+#region Variables (public)
 
 	[SerializeField]
 	private Animation m_pAttackAnim;
@@ -12,7 +12,7 @@ public class VisualCharacter : MonoBehaviour
 	
 	#endregion
 	
-	#region Variables (private)
+#region Variables (private)
 
 	private Character m_pCharacterBUS = null;
 
@@ -49,7 +49,7 @@ public class VisualCharacter : MonoBehaviour
 				transform.position = m_pCharacterBUS.Position;
 			}
 
-			else
+			else	// Keep logic Character's data up to date if navMeshAgent driven
 			{
 				m_pNavMeshAgent.SetDestination(m_pCharacterBUS.Destination);
 				m_pCharacterBUS.Forward = transform.forward;
@@ -57,6 +57,9 @@ public class VisualCharacter : MonoBehaviour
 			}
 		}
 	}
+
+
+#region CallBacks
 
 	public void AttackAnim()
 	{
@@ -83,6 +86,8 @@ public class VisualCharacter : MonoBehaviour
 			m_pNavMeshAgent.velocity = tNavMeshAgentVelocityAtPause;
 		}
 	}
+
+	#endregion CallBacks
 
 
 #region Getters/Setters

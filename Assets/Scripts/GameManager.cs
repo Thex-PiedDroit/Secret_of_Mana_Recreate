@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-	#region Variables (public)
+#region Variables (public)
 
 	
 	
 	#endregion
 	
-	#region Variables (private)
+#region Variables (private)
 
 	static private GameManager s_pInst = null;
 
@@ -18,6 +18,30 @@ public class GameManager : MonoBehaviour
 	private UIManager m_pUIManager = null;
 	
 	#endregion
+
+	
+	void Start()
+	{
+		s_pInst = this;
+
+		m_pCharacManager = new CharacterManager(); // doesn't need to be singleton
+		m_pUIManager = new UIManager();
+		m_pUIManager.OnMenuOpenClose += m_pCharacManager.TogglePause;
+	}
+
+	void Update()
+	{
+		m_pUIManager.Update();
+		m_pCharacManager.Update();
+	}
+
+	void OnDestroy()
+	{
+		m_pUIManager.OnMenuOpenClose -= m_pCharacManager.TogglePause;
+	}
+
+
+#region Getters/Setters
 
 	public CharacterManager CharManager
 	{
@@ -36,19 +60,6 @@ public class GameManager : MonoBehaviour
 	{
 		get { return s_pInst; }
 	}
-	
-	void Start()
-	{
-		s_pInst = this;
 
-		m_pCharacManager = new CharacterManager(); // doesn't need to be singleton
-		m_pUIManager = new UIManager();
-		m_pUIManager.OnMenuOpenClose += m_pCharacManager.TogglePause;
-	}
-
-	void Update()
-	{
-		m_pUIManager.Update();
-		m_pCharacManager.Update();
-	}
+	#endregion Getters/Setters
 }
