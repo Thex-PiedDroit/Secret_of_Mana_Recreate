@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 		Character[] pCharactersBUS = m_pCharacManager.HeroesBUS;
 		for (int i = 0; i < pCharactersPRES.Length; i++)
 		{
-			pCharactersPRES[i] = Instantiate(pCharactersPRES[i], Vector3.zero, Quaternion.identity) as VisualCharacter;
+			pCharactersPRES[i] = Instantiate(pCharactersPRES[i], Vector3.back * i, Quaternion.identity) as VisualCharacter;
 			pCharactersBUS[i] = pCharactersPRES[i].CharacterBUS;
 		}
 	}

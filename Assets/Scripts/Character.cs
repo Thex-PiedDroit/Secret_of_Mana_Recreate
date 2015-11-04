@@ -10,6 +10,7 @@ public class Character
 	private string m_pName = "Anon";
 
 	private float m_fSpeed = 10.0f;
+	private float m_fFollowDist = 2.0f;
 
 	private int m_iLvl = 1;
 	private int m_iHP = 50;
@@ -48,6 +49,16 @@ public class Character
 		{
 			m_pCharacterPRES.AttackAnim();
 		}
+	}
+
+	public void FollowSelected(Vector3 tSelectedHeroPos)
+	{
+		Vector3 tCurrentPos = m_pCharacterPRES.Pos;
+
+		if ((tSelectedHeroPos - tCurrentPos).sqrMagnitude > (m_fFollowDist * m_fFollowDist))
+			m_pCharacterPRES.Destination = tSelectedHeroPos;
+		else if (m_pCharacterPRES.HasPath)
+			m_pCharacterPRES.Destination = tCurrentPos;
 	}
 
 	#endregion Methods

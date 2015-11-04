@@ -34,7 +34,13 @@ public class CharacterManager
 
 	public void Update()
 	{
-		m_pHeroesBUS[m_iSelectedHero].CatchInputs();
+		for (int i = 0; i < m_pHeroesBUS.Length; i++)
+		{
+			if (i == m_iSelectedHero)
+				m_pHeroesBUS[i].CatchInputs();
+			else
+				m_pHeroesBUS[i].FollowSelected(m_pHeroesPRES[m_iSelectedHero].Pos);
+		}
 	}
 
 

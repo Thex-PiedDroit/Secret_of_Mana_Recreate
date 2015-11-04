@@ -10,6 +10,8 @@ public class VisualCharacter : MonoBehaviour
 
 	[SerializeField]
 	private Animation m_pAttackAnim;
+	[SerializeField]
+	private NavMeshAgent m_pNavMeshAgent;
 	
 	#endregion
 	
@@ -36,6 +38,21 @@ public class VisualCharacter : MonoBehaviour
 	{
 		set { transform.forward = value; }
 		get { return transform.forward; }
+	}
+
+	public Vector3 Pos
+	{
+		get { return transform.position; }
+	}
+
+	public Vector3 Destination
+	{
+		set { m_pNavMeshAgent.SetDestination(value); }
+	}
+
+	public bool HasPath
+	{
+		get { return m_pNavMeshAgent.hasPath; }
 	}
 
 	public Character CharacterBUS
