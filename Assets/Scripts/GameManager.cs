@@ -15,16 +15,23 @@ public class GameManager : MonoBehaviour
 	static private GameManager s_pInst = null;
 
 	private CharacterManager m_pCharacManager = null;
+	private UIManager m_pUIManager = null;
 	
 	#endregion
 
-    public CharacterManager CharManager
-    {
-        get
-        {
-            return m_pCharacManager;
-        }
-    }
+	public CharacterManager CharManager
+	{
+		get
+		{
+			return m_pCharacManager;
+		}
+	}
+
+	public UIManager UIManager
+	{
+		get { return m_pUIManager; }
+	}
+
 	static public GameManager Inst
 	{
 		get { return s_pInst; }
@@ -35,25 +42,13 @@ public class GameManager : MonoBehaviour
 		s_pInst = this;
 
 		m_pCharacManager = new CharacterManager(); // doesn't need to be singleton
-		CreateHeroes();
+		m_pUIManager = new UIManager();
+		m_pUIManager.OnMenuOpenClose += m_pCharacManager.TogglePause;
 	}
 
 	void Update()
 	{
+		m_pUIManager.Update();
 		m_pCharacManager.Update();
-	}
-
-
-	public void CreateHeroes()
-	{
-        /*
-		VisualCharacter[] pCharactersPRES = m_pCharacManager.HeroesPRES;
-		Character[] pCharactersBUS = m_pCharacManager.HeroesBUS;
-		for (int i = 0; i < pCharactersPRES.Length; i++)
-		{
-			pCharactersPRES[i] = Instantiate(pCharactersPRES[i], Vector3.back * i, Quaternion.identity) as VisualCharacter;
-			pCharactersBUS[i] = pCharactersPRES[i].CharacterBUS;
-		}
-        /**/
 	}
 }

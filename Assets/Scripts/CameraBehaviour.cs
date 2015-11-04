@@ -26,10 +26,10 @@ public class CameraBehaviour : MonoBehaviour
 
 	void LateUpdate()
 	{
-        Character hero = pCharacManager.SelectedHero;
-        if (hero != null)
+        Character pHero = pCharacManager.SelectedHero;
+        if (pHero != null)
         {
-            transform.position = Vector3.Lerp(transform.position, hero.Position + m_tOffset, m_fFollowSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, pHero.Position + m_tOffset, m_fFollowSpeed * Time.deltaTime);
         }
 	}
 }

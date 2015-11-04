@@ -6,65 +6,92 @@ public class CharacterManager
 {
 #region Variables (private)
 
-	static private CharacterManager s_pInst = null;
-
 	private List<VisualCharacter> m_pHeroesPRES = null;
-    private Character _hero1 = null;
-    private Character _hero2 = null;
-    private Character _hero3 = null;
-    private Character m_selectedHero = null; 
+	private Character pHero1 = null;
+	private Character pHero2 = null;
+	private Character pHero3 = null;
+	private Character m_pSelectedHero = null;
+	private Transform pCharactersContainer = null;
+
+	private bool m_bPaused = false;
+
+	static private float s_fGameTimeScale = 1.0f;
 	
 	#endregion
-    
+	
 
 	public CharacterManager()
 	{
-        _hero1 = new Character("char1", Vector3.zero);
-        _hero2 = new Character("char2", Vector3.one);
-        _hero3 = new Character("char3", -Vector3.one);
-        m_pHeroesPRES = new List<VisualCharacter>();
+		pCharactersContainer = GameObject.Find("Heroes").transform;
+		pHero1 = new Character("Lucia", Vector3.zero);
+		pHero2 = new Character("Richard", Vector3.one);
+		pHero3 = new Character("Nataly", -Vector3.one);
+		m_pHeroesPRES = new List<VisualCharacter>(3);
 
-        GameObject res = Resources.Load("Heroes/Lucia") as GameObject;
-        CreateHeroes(res, _hero1);
-        CreateHeroes(res, _hero2);
-        CreateHeroes(res, _hero3);
+		GameObject pRes = Resources.Load("Heroes/Lucia") as GameObject;
+		CreateHero(pRes, pHero1);
+		CreateHero(pRes, pHero2);
+		CreateHero(pRes, pHero3);
 
-        m_selectedHero = _hero1;
-        _hero1.Selected = true;
-    }
+		m_pSelectedHero = pHero1;
+		pHero1.Selected = true;
+	}
 
-    private void CreateHeroes(GameObject res, Character hero)
-    {
-        GameObject visualHero = GameObject.Instantiate(res) as GameObject;
-        VisualCharacter visualChar = visualHero.GetComponent<VisualCharacter>();
-        if (visualChar != null)
-        {
-            visualChar.Initialise(hero);
-            m_pHeroesPRES.Add(visualChar);
-        }
-    }
-
-    public void Update()
-    {
-        m_selectedHero.CatchInputs();
-        _hero1.FollowSelected(m_selectedHero);
-        _hero2.FollowSelected(m_selectedHero);
-        _hero3.FollowSelected(m_selectedHero);
-
-
-        /*
-		for (int i = 0; i < m_pHeroesBUS.Length; i++)
+	private void CreateHero(GameObject pRes, Character pHero)
+	{
+		GameObject pVisualHero = GameObject.Instantiate(pRes) as GameObject;
+		VisualCharacter pVisualChar = pVisualHero.GetComponent<VisualCharacter>();
+		if (pVisualChar != null)
 		{
-			if (i == m_iSelectedHero)
-				m_pHeroesBUS[i].CatchInputs();
-			else
-				m_pHeroesBUS[i].FollowSelected(m_pHeroesPRES[m_iSelectedHero].Pos);
+			pVisualChar.Initialize(pHero);
+			m_pHeroesPRES.Add(pVisualChar);
+			pVisualHero.transform.parent = pCharactersContainer;
 		}
-        /**/
-    }
+	}
+
+	public void Update()
+	{
+		if (!m_bPaused)
+		{
+			m_pSelectedHero.CatchInputs();
+			pHero1.FollowSelected(m_pSelectedHero);
+			pHero2.FollowSelected(m_pSelectedHero);
+			pHero3.FollowSelected(m_pSelectedHero);
+		}
+	}
+
+
+	public void TogglePause()
+	{
+		m_bPaused = !m_bPaused;
+
+		for (int i = 0; i < m_pHeroesPRES.Count; i++)
+			m_pHeroesPRES[i].TogglePause();
+	}
+
+
+#region Getters/Setters
 
 	public Character SelectedHero
 	{
-		get { return m_selectedHero; }
+		get { return m_pSelectedHero; }
 	}
+
+	public List<VisualCharacter> VisualCharactersList
+	{
+		get { return m_pHeroesPRES; }
+	}
+
+	static public float TimeScale
+	{
+		set { s_fGameTimeScale = value; }
+		get { return s_fGameTimeScale; }
+	}
+
+	static public float DeltaTime
+	{
+		get { return Time.deltaTime * s_fGameTimeScale; }
+	}
+
+	#endregion Getters/Setters
 }
