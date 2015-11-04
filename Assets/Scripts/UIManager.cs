@@ -5,12 +5,17 @@ using System;
 
 public class UIManager
 {
-	#region Variables (private)
+#region Variables (public)
+
+	public Action OnMenuOpenClose;
+
+	#endregion
+
+#region Variables (private)
 
 	private Transform pCanvas = null;
 	private CharacterPanel pCharPanel = null;
 
-	public Action OnMenuOpenClose;
 	private bool m_bUIOpened = false;
 	
 	#endregion

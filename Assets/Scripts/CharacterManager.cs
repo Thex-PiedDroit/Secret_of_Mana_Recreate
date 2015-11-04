@@ -7,9 +7,7 @@ public class CharacterManager
 #region Variables (private)
 
 	private List<VisualCharacter> m_pHeroesPRES = null;
-	private Character pHero1 = null;
-	private Character pHero2 = null;
-	private Character pHero3 = null;
+	private List<Character> m_pHeroesBUS = null;
 	private Character m_pSelectedHero = null;
 	private Transform pCharactersContainer = null;
 
@@ -23,18 +21,19 @@ public class CharacterManager
 	public CharacterManager()
 	{
 		pCharactersContainer = GameObject.Find("Heroes").transform;
-		pHero1 = new Character("Lucia", Vector3.zero);
-		pHero2 = new Character("Richard", Vector3.one);
-		pHero3 = new Character("Nataly", -Vector3.one);
+		m_pHeroesBUS = new List<Character>(3);
+		m_pHeroesBUS.Add(new Character("Lucia", Vector3.zero));
+		m_pHeroesBUS.Add(new Character("Richard", Vector3.one));
+		m_pHeroesBUS.Add(new Character("Nataly", -Vector3.one));
 		m_pHeroesPRES = new List<VisualCharacter>(3);
 
 		GameObject pRes = Resources.Load("Heroes/Lucia") as GameObject;
-		CreateHero(pRes, pHero1);
-		CreateHero(pRes, pHero2);
-		CreateHero(pRes, pHero3);
+		CreateHero(pRes, m_pHeroesBUS[0]);
+		CreateHero(pRes, m_pHeroesBUS[1]);
+		CreateHero(pRes, m_pHeroesBUS[2]);
 
-		m_pSelectedHero = pHero1;
-		pHero1.Selected = true;
+		m_pSelectedHero = m_pHeroesBUS[0];
+		m_pHeroesBUS[0].Selected = true;
 	}
 
 	private void CreateHero(GameObject pRes, Character pHero)
@@ -54,12 +53,21 @@ public class CharacterManager
 		if (!m_bPaused)
 		{
 			m_pSelectedHero.CatchInputs();
-			pHero1.FollowSelected(m_pSelectedHero);
-			pHero2.FollowSelected(m_pSelectedHero);
-			pHero3.FollowSelected(m_pSelectedHero);
+			m_pHeroesBUS[0].FollowSelected(m_pSelectedHero);
+			m_pHeroesBUS[1].FollowSelected(m_pSelectedHero);
+			m_pHeroesBUS[2].FollowSelected(m_pSelectedHero);
 		}
 	}
 
+	public void SelectHero(int iHeroID)
+	{
+		m_pSelectedHero.Selected = false;
+		m_pSelectedHero = m_pHeroesBUS[iHeroID];
+		m_pHeroesPRES[iHeroID].ToggleSelect();
+	}
+
+
+#region CallBacks
 
 	public void TogglePause()
 	{
@@ -69,6 +77,7 @@ public class CharacterManager
 			m_pHeroesPRES[i].TogglePause();
 	}
 
+	#endregion CallBacks
 
 #region Getters/Setters
 

@@ -58,6 +58,20 @@ public class VisualCharacter : MonoBehaviour
 		}
 	}
 
+	public void ToggleSelect()
+	{
+		m_pCharacterBUS.Selected = !m_pCharacterBUS.Selected;
+
+		if (m_pCharacterBUS.Selected)
+		{
+			tNavMeshAgentDestAtPause = transform.position;
+			tNavMeshAgentVelocityAtPause = Vector3.zero;
+
+			if (m_pNavMeshAgent.enabled)
+				m_pNavMeshAgent.SetDestination(transform.position);
+		}
+	}
+
 
 #region CallBacks
 

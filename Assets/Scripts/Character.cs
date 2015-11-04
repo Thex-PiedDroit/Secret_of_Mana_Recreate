@@ -4,13 +4,18 @@ using System;
 
 public class Character
 {
+#region Variables (public)
+
+	public Action OnHitTaken; //Visual character can register to this event
+
+	#endregion
+
 #region Variables (private)
 
 	//private VisualCharacter m_pCharacterPRES = null; NOT ALLOWED Logic does not know visual
 	private Vector3 m_tPosition = Vector3.zero;
 	private Vector3 m_tForward = Vector3.forward;
 	private Vector3 m_tDestination = Vector3.zero;
-	public Action OnHitTaken; //Visual character can register to this event
 
 	private string m_pName = "Anon";
 

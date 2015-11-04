@@ -9,11 +9,16 @@ public abstract class ManaPanel : MonoBehaviour
 
 	#endregion
 
+#region Variables (protected)
+
+	protected int m_iCurrentPage = 0;
+
+	#endregion
+
 #region Variables (private)
 
 	static private List<VisualCharacter> s_pCharacters = null;
 
-	private int m_iCurrentPage = 0;
 	private bool m_bOpened = false;
 	
 	#endregion

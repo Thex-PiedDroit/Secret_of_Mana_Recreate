@@ -45,4 +45,10 @@ public class CharacterPanel : ManaPanel
 		pDef.text = pCurrentChar.DefText;
 		pDefBonus.text = pCurrentChar.DefBonusText;
 	}
+
+
+	public void SelectHero()
+	{
+		GameManager.Inst.CharManager.SelectHero(m_iCurrentPage);
+	}
 }
