@@ -3,6 +3,19 @@ using System.Collections;
 
 public class Sword : Weapon
 {
+#region Variables (private)
+
+	static private GameObject s_pSwordRef = null;
+
+	#endregion
+
+
+	static public void S_SwordInitialize()
+	{
+		s_pSwordRef = Resources.Load<GameObject>("Heroes/Weapons/Sword");
+	}
+
+
 	public Sword(Character pUser) : base(pUser, WeaponType.Sword)
 	{
 		m_iTargetsLayer = ~(LayerMask.GetMask("Heroes"));
@@ -29,5 +42,11 @@ public class Sword : Weapon
 				}
 			}
 		}
+	}
+
+
+	static public GameObject Ref
+	{
+		get { return s_pSwordRef; }
 	}
 }

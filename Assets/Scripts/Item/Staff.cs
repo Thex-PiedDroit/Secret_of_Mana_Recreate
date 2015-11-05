@@ -7,7 +7,15 @@ public class Staff : Weapon
 
 	private int m_iHeal = 3;
 
+	static private GameObject s_pStaffRef = null;
+
 	#endregion
+
+
+	static public void S_StaffInitialize()
+	{
+		s_pStaffRef = Resources.Load<GameObject>("Heroes/Weapons/Staff");
+	}
 
 
 	public Staff(Character pUser) : base(pUser, WeaponType.Staff)
@@ -27,5 +35,11 @@ public class Staff : Weapon
 			if (tChar != null)
 				tChar.CharacterBUS.Heal(m_iHeal);
 		}
+	}
+
+
+	static public GameObject Ref
+	{
+		get { return s_pStaffRef; }
 	}
 }

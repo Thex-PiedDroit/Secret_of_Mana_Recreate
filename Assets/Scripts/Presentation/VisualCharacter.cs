@@ -6,8 +6,6 @@ public class VisualCharacter : MonoBehaviour
 #region Variables (public)
 
 	[SerializeField]
-	private Animation m_pAttackAnim;
-	[SerializeField]
 	private NavMeshAgent m_pNavMeshAgent;
 	
 	#endregion
@@ -15,6 +13,8 @@ public class VisualCharacter : MonoBehaviour
 #region Variables (private)
 
 	private Character m_pCharacterBUS = null;
+
+	private Animation m_pAttackAnim;
 
 	private Vector3 tNavMeshAgentVelocityAtPause = Vector3.zero;
 	private Vector3 tNavMeshAgentDestAtPause = Vector3.zero;
@@ -27,6 +27,7 @@ public class VisualCharacter : MonoBehaviour
 	{
 		//VisualCharacter shouldn't create the logical one
 		//Character should be created in the CharacterManager and the VisualCharacter should either be created in same place (kept in separate lists) or in the GameManager
+		m_pAttackAnim = GetComponentInChildren<Animation>();
 
 		gameObject.name = pCharacter.Name;
 		m_pCharacterBUS = pCharacter;

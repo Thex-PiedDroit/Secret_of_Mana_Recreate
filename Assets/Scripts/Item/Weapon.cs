@@ -29,7 +29,9 @@ abstract public class Weapon : Item
 
 	static public void S_Initialize()
 	{
-		Bow.BowInitialize();
+		Sword.S_SwordInitialize();
+		Bow.S_BowInitialize();
+		Staff.S_StaffInitialize();
 	}
 
 	public Weapon(Character pUser, WeaponType eWeaponType) : base(pUser, ItemType.Weapon)

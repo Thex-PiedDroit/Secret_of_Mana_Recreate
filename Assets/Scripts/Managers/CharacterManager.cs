@@ -34,7 +34,7 @@ public class CharacterManager
 
 		m_pHeroesPRES = new List<VisualCharacter>(3);
 
-		GameObject pRes = Resources.Load("Heroes/Lucia") as GameObject;
+		GameObject pRes = Resources.Load("Heroes/Hero") as GameObject;
 		CreateHero(pRes, m_pHeroesBUS[0], Weapon.WeaponType.Sword, Armor.ArmorType.Heavy);
 		CreateHero(pRes, m_pHeroesBUS[1], Weapon.WeaponType.Bow, Armor.ArmorType.Medium);
 		CreateHero(pRes, m_pHeroesBUS[2], Weapon.WeaponType.Staff, Armor.ArmorType.Light);
@@ -47,27 +47,44 @@ public class CharacterManager
 	{
 		GameObject pVisualHero = GameObject.Instantiate(pRes) as GameObject;
 		VisualCharacter pVisualChar = pVisualHero.GetComponent<VisualCharacter>();
+
 		if (pVisualChar != null)
 		{
-			pVisualChar.Initialize(pHero);
-			m_pHeroesPRES.Add(pVisualChar);
-			pVisualHero.transform.parent = pCharactersContainer;
-
-			switch(eWeaponType)
+			if (eWeaponType != Weapon.WeaponType.Default)
 			{
-			case Weapon.WeaponType.Sword:
-				pHero.WeaponEquiped = new Sword(pHero);
-				break;
-			case Weapon.WeaponType.Bow:
-				pHero.WeaponEquiped = new Bow(pHero);
-				break;
-			case Weapon.WeaponType.Staff:
-				pHero.WeaponEquiped = new Staff(pHero);
-				break;
+				GameObject pWeaponRef = null;
+
+				switch (eWeaponType)
+				{
+				case Weapon.WeaponType.Sword:
+					pHero.WeaponEquiped = new Sword(pHero);
+					pWeaponRef = Sword.Ref;
+					break;
+				case Weapon.WeaponType.Bow:
+					pHero.WeaponEquiped = new Bow(pHero);
+					pWeaponRef = Bow.Ref;
+					break;
+				case Weapon.WeaponType.Staff:
+					pHero.WeaponEquiped = new Staff(pHero);
+					pWeaponRef = Staff.Ref;
+					break;
+				}
+
+				if (pWeaponRef != null)
+				{
+					GameObject pWeaponObject = GameObject.Instantiate(pWeaponRef) as GameObject;
+					pWeaponObject.transform.parent = pVisualHero.transform;
+					pWeaponObject.transform.localPosition = pWeaponRef.transform.position;
+				}
 			}
 
 			if (eArmorType != Armor.ArmorType.Default)
 				pHero.ArmorEquiped = new Armor(pHero, eArmorType);
+
+
+			pVisualChar.Initialize(pHero);
+			m_pHeroesPRES.Add(pVisualChar);
+			pVisualHero.transform.parent = pCharactersContainer;
 		}
 	}
 
