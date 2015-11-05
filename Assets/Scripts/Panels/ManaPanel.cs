@@ -25,10 +25,12 @@ public abstract class ManaPanel : MonoBehaviour
 	#endregion
 
 	
-	static public void Initialize()
+	static public void S_Initialize()
 	{
 		s_pCharacters = GameManager.Inst.CharManager.VisualCharactersList;
 	}
+
+	virtual public void Initialize() { }
 
 	virtual public void CatchOpenInput()
 	{
