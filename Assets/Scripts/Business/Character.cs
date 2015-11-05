@@ -6,7 +6,14 @@ public class Character
 {
 #region Variables (public)
 
+	public enum Side
+	{
+		GoodGuys,
+		BadGuys
+	}
+
 	public Action OnHitTaken; //Visual character can register to this event
+	public Action OnDeath;
 
 	#endregion
 
@@ -17,10 +24,14 @@ public class Character
 	private Vector3 m_tForward = Vector3.forward;
 	private Vector3 m_tDestination = Vector3.zero;
 
+	private Weapon m_pWeapon = null;
+
 	private string m_pName = "Anon";
 
 	private float m_fSpeed = 10.0f;
 	private float m_fFollowDist = 2.0f;
+
+	private Side m_eSide = Side.BadGuys;
 
 	private int m_iLvl = 1;
 	private int m_iHPMax = 50;
@@ -29,14 +40,16 @@ public class Character
 	private int m_iMP = 10;
 	private int m_iAtk = 5;
 	private int m_iDef = 5;
+	private bool m_bDead = false;
 	private bool m_bSelected = false;
 	
 	#endregion
 
-	public Character(string pName, Vector3 tPosition)//add more if needed but this should be enough
+	public Character(string pName, Vector3 tPosition, Side eSide)//add more if needed but this should be enough
 	{
 		m_pName = pName;
 		m_tPosition = tPosition;
+		m_eSide = eSide;
 	}
 
 #region Methods
@@ -60,7 +73,11 @@ public class Character
 
 		if (Input.GetButtonDown("Hit"))
 		{
-			OnHitTaken(); // This triggers the action and notify all that are listening
+			if (m_pWeapon != null)
+			{
+				m_pWeapon.Use();
+				OnHitTaken(); // This triggers the action and notify all that are listening
+			}
 		}
 	}
 
@@ -80,10 +97,48 @@ public class Character
 			m_tDestination = m_tPosition;
 	}
 
+	public void Heal(int iHeal)
+	{
+		Debug.Log("Heal received");
+		m_iHP += iHeal;
+
+		if (m_iHP > m_iHPMax)
+			m_iHP = m_iHPMax;
+	}
+
+	public void Damage(int iDamages)
+	{
+		Debug.Log("Damages received");
+		m_iHP -= iDamages;
+
+		if (m_iHP <= 0)
+		{
+			m_iHP = 0;
+			m_bDead = true;
+			OnDeath();
+		}
+	}
+
 	#endregion Methods
 
 
 #region Getters/Setters
+
+	public Side CharSide
+	{
+		//set { m_eSide = value; }
+		get { return m_eSide; }
+	}
+
+	public bool IsAlive
+	{
+		get { return !m_bDead;}
+	}
+
+	public Weapon WeaponEquiped
+	{
+		set { m_pWeapon = value; }
+	}
 
 	public string Name
 	{
@@ -120,17 +175,17 @@ public class Character
 
 	public int Atk
 	{
-		get { return m_iAtk /* - pWeapon.Atk*/; }
+		get { return m_iAtk; }
 	}
 
 	public int WpnAtk
 	{
-		get { return 0; }	// Currently empty
+		get { return m_pWeapon != null ? m_pWeapon.Atk : 0; }
 	}
 
 	public int Def
 	{
-		get { return m_iDef /* - pArmor.Def*/; }
+		get { return m_iDef; }
 	}
 
 	public int ArmorDef

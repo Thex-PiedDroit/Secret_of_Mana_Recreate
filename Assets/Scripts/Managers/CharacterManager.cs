@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Assertions;
 
 public class CharacterManager
 {
@@ -12,6 +13,7 @@ public class CharacterManager
 	private Transform pCharactersContainer = null;
 
 	private bool m_bPaused = false;
+	private bool m_bGameOver = false;
 
 	static private float s_fGameTimeScale = 1.0f;
 	
@@ -20,11 +22,19 @@ public class CharacterManager
 
 	public CharacterManager()
 	{
+		Weapon.S_Initialize();
+
 		pCharactersContainer = GameObject.Find("Heroes").transform;
 		m_pHeroesBUS = new List<Character>(3);
-		m_pHeroesBUS.Add(new Character("Lucia", Vector3.zero));
-		m_pHeroesBUS.Add(new Character("Richard", Vector3.one));
-		m_pHeroesBUS.Add(new Character("Nataly", -Vector3.one));
+		m_pHeroesBUS.Add(new Character("Lucia", Vector3.zero, Character.Side.GoodGuys));
+		m_pHeroesBUS[0].WeaponEquiped = new Sword(m_pHeroesBUS[0]);
+		m_pHeroesBUS.Add(new Character("Richard", Vector3.one, Character.Side.GoodGuys));
+		m_pHeroesBUS[1].WeaponEquiped = new Bow(m_pHeroesBUS[1]);
+		m_pHeroesBUS.Add(new Character("Nataly", -Vector3.one, Character.Side.GoodGuys));
+		m_pHeroesBUS[2].WeaponEquiped = new Staff(m_pHeroesBUS[2]);
+		for (int i = 0; i < m_pHeroesBUS.Count; i++)
+			m_pHeroesBUS[i].OnDeath += DeadHeroHandle;
+
 		m_pHeroesPRES = new List<VisualCharacter>(3);
 
 		GameObject pRes = Resources.Load("Heroes/Lucia") as GameObject;
@@ -50,7 +60,7 @@ public class CharacterManager
 
 	public void Update()
 	{
-		if (!m_bPaused)
+		if (!m_bGameOver && !m_bPaused)
 		{
 			m_pSelectedHero.CatchInputs();
 			m_pHeroesBUS[0].FollowSelected(m_pSelectedHero);
@@ -59,11 +69,35 @@ public class CharacterManager
 		}
 	}
 
+	public void DeadHeroHandle()
+	{
+		bool bSelectOtherHero = !m_pSelectedHero.IsAlive;
+		bool bGameOver = true;
+
+		for (int i = 0; i < m_pHeroesBUS.Count; i++)
+		{
+			if (m_pHeroesBUS[i].IsAlive)
+			{
+				bGameOver = false;
+
+				if (bSelectOtherHero)
+					SelectHero(i);
+
+				break;
+			}
+		}
+
+		m_bGameOver = bGameOver;
+	}
+
 	public void SelectHero(int iHeroID)
 	{
-		m_pSelectedHero.Selected = false;
-		m_pSelectedHero = m_pHeroesBUS[iHeroID];
-		m_pHeroesPRES[iHeroID].ToggleSelect();
+		if (m_pHeroesBUS[iHeroID].IsAlive)
+		{
+			m_pSelectedHero.Selected = false;
+			m_pSelectedHero = m_pHeroesBUS[iHeroID];
+			m_pHeroesPRES[iHeroID].ToggleSelect();
+		}
 	}
 
 
