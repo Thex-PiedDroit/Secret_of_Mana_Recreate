@@ -12,6 +12,7 @@ public abstract class ManaPanel : MonoBehaviour
 #region Variables (protected)
 
 	protected int m_iCurrentPage = 0;
+	static protected int s_iSelectedCharPage = 0;
 
 	#endregion
 
@@ -49,6 +50,8 @@ public abstract class ManaPanel : MonoBehaviour
 
 	void OpenClose()
 	{
+		m_iCurrentPage = s_iSelectedCharPage;
+		Refresh();
 		m_bOpened = !m_bOpened;
 		GameManager.Inst.UIManager.TogglePanel(this, m_bOpened);
 	}
