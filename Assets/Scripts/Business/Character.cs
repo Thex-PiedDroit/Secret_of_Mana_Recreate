@@ -25,6 +25,7 @@ public class Character
 	private Vector3 m_tDestination = Vector3.zero;
 
 	private Weapon m_pWeapon = null;
+	private Armor m_pArmor = null;
 
 	private string m_pName = "Anon";
 
@@ -140,6 +141,11 @@ public class Character
 		set { m_pWeapon = value; }
 	}
 
+	public Armor ArmorEquiped
+	{
+		set { m_pArmor = value; }
+	}
+
 	public string Name
 	{
 		get
@@ -190,7 +196,7 @@ public class Character
 
 	public int ArmorDef
 	{
-		get { return 0; }	//Currently empty
+		get { return m_pArmor != null ? m_pArmor.Def : 0; }
 	}
 
 	public Vector3 Position

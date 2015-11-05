@@ -11,7 +11,7 @@ abstract public class Weapon : Item
 		Staff
 	}
 
-	#region Variables (protected)
+#region Variables (protected)
 
 	protected float m_fRange = 1.0f;
 	protected int m_iAtk = 0;
@@ -20,7 +20,7 @@ abstract public class Weapon : Item
 	
 	#endregion
 
-	#region Variables (private)
+#region Variables (private)
 
 	private WeaponType m_eWeaponType = WeaponType.Default;
 

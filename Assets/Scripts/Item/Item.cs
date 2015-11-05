@@ -3,15 +3,15 @@ using System.Collections;
 
 abstract public class Item
 {
-#region Variables (protected)
-	
-	protected enum ItemType
+	public enum ItemType
 	{
 		Default,
 		Weapon,
 		Armor
 	}
 
+#region Variables (protected)
+	
 	protected ItemType m_eItemType = ItemType.Default;
 
 	protected Character m_pUser = null;

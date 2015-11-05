@@ -27,26 +27,23 @@ public class CharacterManager
 		pCharactersContainer = GameObject.Find("Heroes").transform;
 		m_pHeroesBUS = new List<Character>(3);
 		m_pHeroesBUS.Add(new Character("Lucia", Vector3.zero, Character.Side.GoodGuys));
-		m_pHeroesBUS[0].WeaponEquiped = new Sword(m_pHeroesBUS[0]);
 		m_pHeroesBUS.Add(new Character("Richard", Vector3.one, Character.Side.GoodGuys));
-		m_pHeroesBUS[1].WeaponEquiped = new Bow(m_pHeroesBUS[1]);
 		m_pHeroesBUS.Add(new Character("Nataly", -Vector3.one, Character.Side.GoodGuys));
-		m_pHeroesBUS[2].WeaponEquiped = new Staff(m_pHeroesBUS[2]);
 		for (int i = 0; i < m_pHeroesBUS.Count; i++)
 			m_pHeroesBUS[i].OnDeath += DeadHeroHandle;
 
 		m_pHeroesPRES = new List<VisualCharacter>(3);
 
 		GameObject pRes = Resources.Load("Heroes/Lucia") as GameObject;
-		CreateHero(pRes, m_pHeroesBUS[0]);
-		CreateHero(pRes, m_pHeroesBUS[1]);
-		CreateHero(pRes, m_pHeroesBUS[2]);
+		CreateHero(pRes, m_pHeroesBUS[0], Weapon.WeaponType.Sword, Armor.ArmorType.Heavy);
+		CreateHero(pRes, m_pHeroesBUS[1], Weapon.WeaponType.Bow, Armor.ArmorType.Medium);
+		CreateHero(pRes, m_pHeroesBUS[2], Weapon.WeaponType.Staff, Armor.ArmorType.Light);
 
 		m_pSelectedHero = m_pHeroesBUS[0];
 		m_pHeroesBUS[0].Selected = true;
 	}
 
-	private void CreateHero(GameObject pRes, Character pHero)
+	private void CreateHero(GameObject pRes, Character pHero, Weapon.WeaponType eWeaponType = Weapon.WeaponType.Default, Armor.ArmorType eArmorType = Armor.ArmorType.Default)
 	{
 		GameObject pVisualHero = GameObject.Instantiate(pRes) as GameObject;
 		VisualCharacter pVisualChar = pVisualHero.GetComponent<VisualCharacter>();
@@ -55,6 +52,22 @@ public class CharacterManager
 			pVisualChar.Initialize(pHero);
 			m_pHeroesPRES.Add(pVisualChar);
 			pVisualHero.transform.parent = pCharactersContainer;
+
+			switch(eWeaponType)
+			{
+			case Weapon.WeaponType.Sword:
+				pHero.WeaponEquiped = new Sword(pHero);
+				break;
+			case Weapon.WeaponType.Bow:
+				pHero.WeaponEquiped = new Bow(pHero);
+				break;
+			case Weapon.WeaponType.Staff:
+				pHero.WeaponEquiped = new Staff(pHero);
+				break;
+			}
+
+			if (eArmorType != Armor.ArmorType.Default)
+				pHero.ArmorEquiped = new Armor(pHero, eArmorType);
 		}
 	}
 
