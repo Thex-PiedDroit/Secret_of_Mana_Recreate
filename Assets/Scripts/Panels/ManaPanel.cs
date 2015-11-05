@@ -52,7 +52,7 @@ public abstract class ManaPanel : MonoBehaviour
 	{
 		m_iCurrentPage = s_iSelectedCharPage;
 		Refresh();
-		m_bOpened = !m_bOpened;
+		m_bOpened = !UIElementActive;
 		GameManager.Inst.UIManager.TogglePanel(this, m_bOpened);
 	}
 

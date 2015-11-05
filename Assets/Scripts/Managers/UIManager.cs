@@ -54,14 +54,13 @@ public class UIManager
 	
 	public void TogglePanel(ManaPanel pPanel, bool bOpened)
 	{
-		// Disable other panels here
 		pCharPanel.UIElementActive = false;
 		pInvPanel.UIElementActive = false;
 
-		pPanel.UIElementActive = bOpened;	// Currently for tests purposes, will change when more panels to manage
+		pPanel.UIElementActive = bOpened;
 
 		bool bNewState = pCharPanel.UIElementActive || pInvPanel.UIElementActive;
-		bool bStateChanged = (m_bUIOpened != bNewState);	// this too
+		bool bStateChanged = (m_bUIOpened != bNewState);
 		m_bUIOpened = bNewState;
 
 		if (bStateChanged)
