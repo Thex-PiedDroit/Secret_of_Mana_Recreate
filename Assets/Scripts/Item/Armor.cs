@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Armor : MonoBehaviour
+public class Armor : Item
 {
 	#region Variables (public)
 	
-	
+	public enum ArmorType
+	{
+		Default,
+		Light,
+		Medium,
+		Heavy
+	}
 	
 	#endregion
 	
 	#region Variables (private)
-	
-	
+
+	private ArmorType m_eArmorType = ArmorType.Default;
 	
 	#endregion
 
 
-	void Start()
+	public Armor(Character pUser, ArmorType eArmorType) : base(pUser, ItemType.Armor)
 	{
-		
-	}
-	
-	void Update()
-	{
-		
+		m_eArmorType = eArmorType;
 	}
 }

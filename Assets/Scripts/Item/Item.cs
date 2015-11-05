@@ -25,8 +25,9 @@ abstract public class Item
 	#endregion
 
 
-	public void Initialize(Character pUser)
+	public Item(Character pUser, ItemType eItemType)
 	{
 		m_pUser = pUser;
+		m_eItemType = eItemType;
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Sword : Weapon
 {
-	public Sword(Character pUser) : base(pUser)
+	public Sword(Character pUser) : base(pUser, WeaponType.Sword)
 	{
 		m_iTargetsLayer = ~(LayerMask.GetMask("Heroes"));
 		m_fRange = 2.0f;

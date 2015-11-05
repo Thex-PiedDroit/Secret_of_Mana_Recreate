@@ -16,7 +16,7 @@ public class Bow : Weapon
 	}
 
 
-	public Bow(Character pUser) : base(pUser)
+	public Bow(Character pUser) : base(pUser, WeaponType.Bow)
 	{
 		m_iTargetsLayer = ~(LayerMask.GetMask("Heroes"));
 		m_fRange = 10.0f;

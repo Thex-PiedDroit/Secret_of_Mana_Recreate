@@ -3,6 +3,14 @@ using System.Collections;
 
 abstract public class Weapon : Item
 {
+	public enum WeaponType
+	{
+		Default,
+		Sword,
+		Bow,
+		Staff
+	}
+
 	#region Variables (protected)
 
 	protected float m_fRange = 1.0f;
@@ -12,15 +20,21 @@ abstract public class Weapon : Item
 	
 	#endregion
 
+	#region Variables (private)
+
+	private WeaponType m_eWeaponType = WeaponType.Default;
+
+	#endregion
+
 
 	static public void S_Initialize()
 	{
 		Bow.BowInitialize();
 	}
 
-	public Weapon(Character pUser)
+	public Weapon(Character pUser, WeaponType eWeaponType) : base(pUser, ItemType.Weapon)
 	{
-		m_pUser = pUser;
+		m_eWeaponType = eWeaponType;
 	}
 
 

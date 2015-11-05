@@ -10,7 +10,7 @@ public class Staff : Weapon
 	#endregion
 
 
-	public Staff(Character pUser) : base(pUser)
+	public Staff(Character pUser) : base(pUser, WeaponType.Staff)
 	{
 		m_iTargetsLayer = LayerMask.GetMask("Heroes");
 		m_fRange = 5.0f;
