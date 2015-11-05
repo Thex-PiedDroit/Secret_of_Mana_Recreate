@@ -25,7 +25,7 @@ public abstract class ManaPanel : MonoBehaviour
 	#endregion
 
 	
-	virtual public void Initialize()
+	static public void Initialize()
 	{
 		s_pCharacters = GameManager.Inst.CharManager.VisualCharactersList;
 	}

@@ -24,6 +24,7 @@ public class UIManager
 
 	public UIManager()
 	{
+		ManaPanel.Initialize();
 		pCharPanel = GameObject.FindObjectOfType<CharacterPanel>();
 		//pCanvas = GameObject.FindObjectOfType<Canvas>().gameObject.transform;
 		//CharacterPanel pRef = Resources.Load<CharacterPanel>("HUD/CharacPanel");
@@ -47,7 +48,7 @@ public class UIManager
 
 	void InitPanel(ManaPanel pPanel)
 	{
-		pPanel.Initialize();
+		//pPanel.Initialize();
 		pPanel.Refresh();
 		TogglePanel(pPanel, false);
 	}
