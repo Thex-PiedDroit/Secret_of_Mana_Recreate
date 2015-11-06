@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class VisualCharacter : MonoBehaviour
 {
@@ -173,6 +174,11 @@ public class VisualCharacter : MonoBehaviour
 	public Character CharacterBUS
 	{
 		get { return m_pCharacterBUS; }
+	}
+
+	public List<Item> Inv
+	{
+		get { return m_pCharacterBUS.Inv.Items; }
 	}
 
 	#endregion Getters/Setters

@@ -1,54 +1,67 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Arrow : MonoBehaviour
+public class Arrow
 {
 	#region Variables (private)
 
+	private Vector3 m_tPos = Vector3.zero;
 	private Vector3 m_tSpawnPos = Vector3.zero;
+	private Vector3 m_tForward = Vector3.forward;
 	private float m_fMaxDist = 50.0f;
 	private float m_fSpeed = 30.0f;
 	private int m_iDamages = 0;
+	private bool m_bDead = false;
 
 	private Character.Side m_eSide = Character.Side.GoodGuys;
 	
 	#endregion
 
 
-	void Start()
+	public Arrow(Vector3 tPos, Vector3 tForward, int iDamages, float fMaxDist, Character.Side eArrowSide)
 	{
-		m_tSpawnPos = transform.position;
+		m_tPos = tPos;
+		m_tSpawnPos = tPos;
+		m_tForward = tForward;
+		m_iDamages = iDamages;
+		m_fMaxDist = fMaxDist;
+		m_eSide = eArrowSide;
 	}
 
-	void Update()
+	public void Update()
 	{
-		Vector3 tMove = (transform.forward * m_fSpeed) * CharacterManager.DeltaTime;	// Took the liberty to merge visual and logic for this class because of how small it is
-		transform.Translate(tMove, Space.World);
+		Vector3 tMove = (m_tForward * m_fSpeed) * CharacterManager.DeltaTime;
+		m_tPos += tMove;
 
-		if ((transform.position - m_tSpawnPos).sqrMagnitude >= (m_fMaxDist * m_fMaxDist))
-			Destroy(gameObject);
-	}
-
-
-	void OnCollisionEnter(Collision tCollider)
-	{
-		print(tCollider.gameObject.name);
-		VisualCharacter tHitCharPRES = tCollider.transform.parent.gameObject.GetComponent<VisualCharacter>();
-
-		if (tHitCharPRES != null && tHitCharPRES.CharacterBUS.CharSide != m_eSide)
-			tHitCharPRES.CharacterBUS.Damage(m_iDamages);
-
-		Destroy(gameObject);
+		if ((m_tPos - m_tSpawnPos).sqrMagnitude >= (m_fMaxDist * m_fMaxDist))
+			m_bDead = true;
 	}
 
 
-	public Character.Side ArrowSide
+	public void OnCollisionEnter(Character pCharacterHit)
 	{
-		set { m_eSide = value; }
+		if (pCharacterHit != null &&
+			pCharacterHit.CharSide != m_eSide)
+		{
+			pCharacterHit.Damage(m_iDamages);
+		}
+
+		m_bDead = true;
 	}
 
-	public int Damages
+
+	public Vector3 Position
 	{
-		set { m_iDamages = value; }
+		get { return m_tPos; }
+	}
+
+	public Vector3 Forward
+	{
+		get { return m_tForward; }
+	}
+
+	public bool IsDead
+	{
+		get { return m_bDead; }
 	}
 }

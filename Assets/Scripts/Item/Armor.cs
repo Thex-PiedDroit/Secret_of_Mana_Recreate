@@ -13,11 +13,18 @@ public class Armor : Item
 	
 #region Variables (private)
 
-	private ArmorType m_eArmorType = ArmorType.Default;
+	static private GameObject s_pArmorIconRef = null;
 
+	private ArmorType m_eArmorType = ArmorType.Default;
 	private int m_iDef = 0;
 	
 	#endregion
+
+
+	static public void S_ArmorInitialize()
+	{
+		s_pArmorIconRef = Resources.Load<GameObject>("HUD/ItemIcons/ArmorIcon");
+	}
 
 
 	public Armor(Character pUser, ArmorType eArmorType) : base(pUser, ItemType.Armor)
@@ -42,5 +49,11 @@ public class Armor : Item
 	public int Def
 	{
 		get { return m_iDef; }
+	}
+
+
+	override public GameObject IconRef
+	{
+		get { return s_pArmorIconRef; }
 	}
 }

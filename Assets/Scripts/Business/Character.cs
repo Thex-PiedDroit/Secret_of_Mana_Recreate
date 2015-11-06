@@ -24,6 +24,7 @@ public class Character
 	private Vector3 m_tForward = Vector3.forward;
 	private Vector3 m_tDestination = Vector3.zero;
 
+	private Inventory m_pInventory = null;
 	private Weapon m_pWeapon = null;
 	private Armor m_pArmor = null;
 
@@ -48,6 +49,7 @@ public class Character
 
 	public Character(string pName, Vector3 tPosition, Side eSide)//add more if needed but this should be enough
 	{
+		m_pInventory = new Inventory();
 		m_pName = pName;
 		m_tPosition = tPosition;
 		m_eSide = eSide;
@@ -110,7 +112,7 @@ public class Character
 	public void Damage(int iDamages)
 	{
 		Debug.Log("Damages received");
-		m_iHP -= iDamages;
+		m_iHP -= (iDamages - m_pArmor.Def);
 
 		if (m_iHP <= 0)
 		{
@@ -134,6 +136,11 @@ public class Character
 	public bool IsAlive
 	{
 		get { return !m_bDead;}
+	}
+
+	public Inventory Inv
+	{
+		get { return m_pInventory; }
 	}
 
 	public Weapon WeaponEquiped

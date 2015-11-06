@@ -42,7 +42,7 @@ public class CharacterPanel : ManaPanel
 
 	override public void Refresh()
 	{
-		VisualCharacter pCurrentChar = CurrentChar;
+		VisualCharacter pCurrentChar = CurrentPageChar;
 
 		pName.text = pCurrentChar.Name;
 		pLevel.text = pCurrentChar.LevelText;

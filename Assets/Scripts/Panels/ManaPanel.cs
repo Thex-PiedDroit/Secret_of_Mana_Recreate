@@ -77,7 +77,7 @@ public abstract class ManaPanel : MonoBehaviour
 
 #region Getters/Setters
 
-	protected VisualCharacter CurrentChar
+	protected VisualCharacter CurrentPageChar
 	{
 		get { return s_pCharacters[m_iCurrentPage]; }
 	}

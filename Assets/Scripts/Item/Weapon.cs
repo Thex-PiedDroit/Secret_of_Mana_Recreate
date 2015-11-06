@@ -27,13 +27,6 @@ abstract public class Weapon : Item
 	#endregion
 
 
-	static public void S_Initialize()
-	{
-		Sword.S_SwordInitialize();
-		Bow.S_BowInitialize();
-		Staff.S_StaffInitialize();
-	}
-
 	public Weapon(Character pUser, WeaponType eWeaponType) : base(pUser, ItemType.Weapon)
 	{
 		m_eWeaponType = eWeaponType;
@@ -48,6 +41,11 @@ abstract public class Weapon : Item
 
 	abstract public void Use();
 
+
+	public WeaponType WpnType
+	{
+		get { return m_eWeaponType; }
+	}
 
 	public int Atk
 	{

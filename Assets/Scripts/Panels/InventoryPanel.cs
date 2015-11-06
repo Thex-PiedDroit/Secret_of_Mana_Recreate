@@ -32,7 +32,7 @@ public class InventoryPanel : ManaPanel
 			pItemsLists.Add(new List<GameObject>());
 	}
 
-	void AddItem(GameObject pItemRef, int iCharID)
+	void CreateItem(GameObject pItemRef, int iCharID)
 	{
 		Assert.IsTrue((iCharID > 0) && (iCharID < pItemsLists.Capacity));
 

@@ -22,7 +22,7 @@ public class CharacterManager
 
 	public CharacterManager()
 	{
-		Weapon.S_Initialize();
+		Item.S_Initialize();
 
 		pCharactersContainer = GameObject.Find("Heroes").transform;
 		m_pHeroesBUS = new List<Character>(3);

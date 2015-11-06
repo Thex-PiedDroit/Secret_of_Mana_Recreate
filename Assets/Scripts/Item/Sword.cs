@@ -6,6 +6,7 @@ public class Sword : Weapon
 #region Variables (private)
 
 	static private GameObject s_pSwordRef = null;
+	static private GameObject s_pSwordIconRef = null;
 
 	#endregion
 
@@ -13,6 +14,7 @@ public class Sword : Weapon
 	static public void S_SwordInitialize()
 	{
 		s_pSwordRef = Resources.Load<GameObject>("Heroes/Weapons/Sword");
+		s_pSwordIconRef = Resources.Load<GameObject>("HUD/ItemIcons/SwordIcon");
 	}
 
 
@@ -44,6 +46,11 @@ public class Sword : Weapon
 		}
 	}
 
+
+	override public GameObject IconRef
+	{
+		get { return s_pSwordIconRef; }
+	}
 
 	static public GameObject Ref
 	{

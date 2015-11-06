@@ -8,6 +8,7 @@ public class Staff : Weapon
 	private int m_iHeal = 3;
 
 	static private GameObject s_pStaffRef = null;
+	static private GameObject s_pStaffIconRef = null;
 
 	#endregion
 
@@ -15,6 +16,7 @@ public class Staff : Weapon
 	static public void S_StaffInitialize()
 	{
 		s_pStaffRef = Resources.Load<GameObject>("Heroes/Weapons/Staff");
+		s_pStaffIconRef = Resources.Load<GameObject>("HUD/ItemIcons/StaffIcon");
 	}
 
 
@@ -37,6 +39,11 @@ public class Staff : Weapon
 		}
 	}
 
+
+	override public GameObject IconRef
+	{
+		get { return s_pStaffIconRef; }
+	}
 
 	static public GameObject Ref
 	{
