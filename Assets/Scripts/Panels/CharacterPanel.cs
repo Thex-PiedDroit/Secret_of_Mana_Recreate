@@ -7,8 +7,6 @@ public class CharacterPanel : ManaPanel
 	#region Variables (public)
 
 	[SerializeField]
-	private Text pName;
-	[SerializeField]
 	private Text pLevel;
 	[SerializeField]
 	private Text pHP;

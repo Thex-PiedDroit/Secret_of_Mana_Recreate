@@ -25,8 +25,6 @@ public class Character
 	private Vector3 m_tDestination = Vector3.zero;
 
 	private Inventory m_pInventory = null;
-	private Weapon m_pWeapon = null;
-	private Armor m_pArmor = null;
 
 	private string m_pName = "Anon";
 
@@ -76,9 +74,9 @@ public class Character
 
 		if (Input.GetButtonDown("Hit"))
 		{
-			if (m_pWeapon != null)
+			if (m_pInventory.EquipedWeapon != null)
 			{
-				m_pWeapon.Use();
+				m_pInventory.EquipedWeapon.Use();
 				OnHitTaken(); // This triggers the action and notify all that are listening
 			}
 		}
@@ -112,7 +110,7 @@ public class Character
 	public void Damage(int iDamages)
 	{
 		Debug.Log("Damages received");
-		m_iHP -= (iDamages - m_pArmor.Def);
+		m_iHP -= (iDamages - m_pInventory.EquipedArmor.Def);
 
 		if (m_iHP <= 0)
 		{
@@ -145,12 +143,12 @@ public class Character
 
 	public Weapon WeaponEquiped
 	{
-		set { m_pWeapon = value; }
+		set { m_pInventory.AddItem(value); }
 	}
 
 	public Armor ArmorEquiped
 	{
-		set { m_pArmor = value; }
+		set { m_pInventory.AddItem(value); }
 	}
 
 	public string Name
@@ -193,7 +191,7 @@ public class Character
 
 	public int WpnAtk
 	{
-		get { return m_pWeapon != null ? m_pWeapon.Atk : 0; }
+		get { return m_pInventory.EquipedWeapon != null ? m_pInventory.EquipedWeapon.Atk : 0; }
 	}
 
 	public int Def
@@ -203,7 +201,7 @@ public class Character
 
 	public int ArmorDef
 	{
-		get { return m_pArmor != null ? m_pArmor.Def : 0; }
+		get { return m_pInventory.EquipedArmor != null ? m_pInventory.EquipedArmor.Def : 0; }
 	}
 
 	public Vector3 Position

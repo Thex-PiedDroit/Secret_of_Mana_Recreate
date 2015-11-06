@@ -25,6 +25,14 @@ public class Inventory
 		/* </Tests> */
 	}
 
+	public void RemoveItem(Item pItem)
+	{
+		if (pItems.Contains(pItem))
+		{
+			pItems.Remove(pItem);
+		}
+	}
+
 
 	public List<Item> Items
 	{

@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public abstract class ManaPanel : MonoBehaviour
 {
 #region Variables (public)
 
-	public string m_pOpenButton = null;
+	[SerializeField]
+	protected string m_pOpenButton = null;
+
+	[SerializeField]
+	protected Text pName;
 
 	#endregion
 

@@ -49,7 +49,6 @@ public class UIManager
 	void InitPanel(ManaPanel pPanel)
 	{
 		pPanel.Initialize();
-		pPanel.Refresh();
 		TogglePanel(pPanel, false);
 	}
 	
