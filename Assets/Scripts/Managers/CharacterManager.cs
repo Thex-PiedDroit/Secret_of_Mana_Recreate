@@ -10,6 +10,7 @@ public class CharacterManager
 	private List<VisualHero> m_pHeroesPRES = null;
 	private List<Hero> m_pHeroesBUS = null;
 	private Hero m_pSelectedHero = null;
+	private VisualHero m_pSelectedHeroPRES = null;
 	private Transform pCharactersContainer = null;
 
 	private bool m_bPaused = false;
@@ -22,6 +23,7 @@ public class CharacterManager
 
 	public CharacterManager()
 	{
+		VisualCharacter.S_Initialize();
 		Item.S_Initialize();
 
 		pCharactersContainer = GameObject.Find("Heroes").transform;
@@ -39,8 +41,7 @@ public class CharacterManager
 		CreateHero(pRes, m_pHeroesBUS[1], Weapon.WeaponType.Bow, Armor.ArmorType.Medium);
 		CreateHero(pRes, m_pHeroesBUS[2], Weapon.WeaponType.Staff, Armor.ArmorType.Light);
 
-		m_pSelectedHero = m_pHeroesBUS[0];
-		m_pHeroesBUS[0].Selected = true;
+		SelectHero(0);
 	}
 
 	private void CreateHero(GameObject pRes, Hero pHero, Weapon.WeaponType eWeaponType = Weapon.WeaponType.Default, Armor.ArmorType eArmorType = Armor.ArmorType.Default)
@@ -124,9 +125,13 @@ public class CharacterManager
 	{
 		if (m_pHeroesBUS[iHeroID].IsAlive)
 		{
-			m_pSelectedHero.Selected = false;
+			if (m_pSelectedHero != null)
+				m_pSelectedHeroPRES.ToggleSelect();
+
 			m_pSelectedHero = m_pHeroesBUS[iHeroID];
+			m_pSelectedHeroPRES = m_pHeroesPRES[iHeroID];
 			m_pHeroesPRES[iHeroID].ToggleSelect();
+			VisualEnemy.ActiveHero = m_pSelectedHero;
 		}
 	}
 

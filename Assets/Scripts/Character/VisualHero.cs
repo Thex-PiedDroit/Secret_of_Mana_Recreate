@@ -22,20 +22,22 @@ public class VisualHero : VisualCharacter
 
 	override public void Initialize(Character pHero)
 	{
-		base.Initialize(pHero);
 		m_pHeroBUS = pHero as Hero;
-		m_pHeroBUS.OnHealthChanged += UpdateHealthBar;
+		base.Initialize(pHero);
 		s_pHealthBar = GameObject.Find("HealthBar").transform;
 		s_pHealthBarValue = GameObject.Find("HealthBar_Value").GetComponent<Text>();
+		m_pHeroBUS.OnHealthChanged += UpdateHealthBar;
+
+		UpdateHealthBar();
 	}
 
-	override public void OnDestroy()
+	public override void OnDestroy()
 	{
 		base.OnDestroy();
 		m_pHeroBUS.OnHealthChanged -= UpdateHealthBar;
 	}
 	
-	void Update()
+	override public void Update()
 	{
 		if (!m_bPause)
 		{
@@ -47,10 +49,11 @@ public class VisualHero : VisualCharacter
 
 			else	// Keep logic Character's data up to date if navMeshAgent driven
 			{
-				if (m_pHeroBUS.Destination != m_pNavMeshAgent.destination)
-					m_pNavMeshAgent.SetDestination(m_pHeroBUS.Destination);
-				m_pHeroBUS.Forward = transform.forward;
-				m_pHeroBUS.Position = transform.position;
+				base.Update();
+				//if (m_pHeroBUS.Destination != m_pNavMeshAgent.destination)
+				//	m_pNavMeshAgent.SetDestination(m_pHeroBUS.Destination);
+				//m_pHeroBUS.Forward = transform.forward;
+				//m_pHeroBUS.Position = transform.position;
 			}
 		}
 	}
@@ -75,6 +78,8 @@ public class VisualHero : VisualCharacter
 
 		if (m_pHeroBUS.Selected)
 		{
+			m_pNPCHealthBar.SetActive(false);
+
 			tNavMeshAgentDestAtPause = transform.position;
 			tNavMeshAgentVelocityAtPause = Vector3.zero;
 
