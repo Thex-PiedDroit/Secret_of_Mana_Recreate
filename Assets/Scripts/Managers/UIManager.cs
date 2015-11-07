@@ -16,6 +16,7 @@ public class UIManager
 	//private Transform pCanvas = null;
 	private CharacterPanel pCharPanel = null;
 	private InventoryPanel pInvPanel = null;
+	private GameObject pHealthBar = null;
 
 	private bool m_bUIOpened = false;
 	
@@ -24,17 +25,10 @@ public class UIManager
 
 	public UIManager()
 	{
+		pHealthBar = GameObject.Find("HealthBar_Back");
+
 		ManaPanel.S_Initialize();
 		pCharPanel = GameObject.FindObjectOfType<CharacterPanel>();
-		//pCanvas = GameObject.FindObjectOfType<Canvas>().gameObject.transform;
-		//CharacterPanel pRef = Resources.Load<CharacterPanel>("HUD/CharacPanel");
-		//pCharPanel = GameObject.Instantiate(pRef);
-		//pCharPanel.gameObject.name = pRef.gameObject.name;
-		//pCharPanel.gameObject.transform.SetParent(pCanvas);
-		//pCharPanel.transform.localScale = Vector3.one;
-		//pCharPanel.transform.localPosition = Vector3.zero;
-		//pCharPanel.GetComponent<RawImage>().rectTransform.offsetMin = Vector2.zero;
-		//pCharPanel.GetComponent<RawImage>().rectTransform.offsetMax = Vector2.zero;	// Stretch black background to full screen
 		pInvPanel = GameObject.FindObjectOfType<InventoryPanel>();
 		InitPanel(pCharPanel);
 		InitPanel(pInvPanel);
@@ -62,6 +56,8 @@ public class UIManager
 		bool bNewState = pCharPanel.UIElementActive || pInvPanel.UIElementActive;
 		bool bStateChanged = (m_bUIOpened != bNewState);
 		m_bUIOpened = bNewState;
+		
+		pHealthBar.SetActive(!m_bUIOpened);
 
 		if (bStateChanged)
 			OnMenuOpenClose();

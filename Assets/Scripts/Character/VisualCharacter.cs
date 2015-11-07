@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,7 +8,10 @@ public class VisualCharacter : MonoBehaviour
 #region Variables (public)
 
 	[SerializeField]
-	private NavMeshAgent m_pNavMeshAgent;
+	private NavMeshAgent m_pNavMeshAgent = null;
+
+	[SerializeField]
+	private FloatingDamage pFloatingDamageRef = null;
 	
 	#endregion
 	
@@ -20,12 +24,20 @@ public class VisualCharacter : MonoBehaviour
 	private Vector3 tNavMeshAgentVelocityAtPause = Vector3.zero;
 	private Vector3 tNavMeshAgentDestAtPause = Vector3.zero;
 	private bool m_bPause = false;
+
+	static private Transform s_pDamagesTextContainer = null;
+	static private Transform s_pHealthBar = null;
+	static private Text s_pHealthBarValue = null;
 	
 	#endregion
 
 	//MonoBehaviour object can't have constructors, you need to create Init method instead
 	public void Initialize(Character pCharacter)
 	{
+		s_pDamagesTextContainer = GameObject.Find("Damages").transform;
+		s_pHealthBar = GameObject.Find("HealthBar").transform;
+		s_pHealthBarValue = GameObject.Find("HealthBar_Value").GetComponent<Text>();
+
 		//VisualCharacter shouldn't create the logical one
 		//Character should be created in the CharacterManager and the VisualCharacter should either be created in same place (kept in separate lists) or in the GameManager
 		m_pAttackAnim = GetComponentInChildren<Animation>();
@@ -33,12 +45,16 @@ public class VisualCharacter : MonoBehaviour
 		gameObject.name = pCharacter.Name;
 		m_pCharacterBUS = pCharacter;
 		m_pCharacterBUS.OnHitTaken += AttackAnim; //this is how you register for an event
+		m_pCharacterBUS.OnHealthChanged += UpdateHealthBar;
+		m_pCharacterBUS.OnHealthChanged += CreateFloatingDamage;
 		transform.position = m_pCharacterBUS.Position;
 	}
 	
 	void OnDestroy()
 	{
 		m_pCharacterBUS.OnHitTaken -= AttackAnim; //unregister on destroy to avoid any null exceptions
+		m_pCharacterBUS.OnHealthChanged -= UpdateHealthBar;
+		m_pCharacterBUS.OnHealthChanged -= CreateFloatingDamage;
 	}
 
 	void Update()
@@ -60,6 +76,28 @@ public class VisualCharacter : MonoBehaviour
 		}
 	}
 
+	void CreateFloatingDamage()
+	{
+		Vector3 tPos = Camera.main.WorldToScreenPoint(transform.position + Vector3.up);
+		FloatingDamage pFloatingDamage = Instantiate(pFloatingDamageRef, tPos, Quaternion.identity) as FloatingDamage;
+		pFloatingDamage.transform.SetParent(s_pDamagesTextContainer);
+		pFloatingDamage.ValueToText = m_pCharacterBUS.LastHPChange;
+	}
+
+	void UpdateHealthBar()
+	{
+		if (m_pCharacterBUS.Selected)
+		{
+			float fCurrentHP = m_pCharacterBUS.CurrentHP;
+			float fHPMax = m_pCharacterBUS.HPMax;
+
+			float fHealthPercent = fCurrentHP / fHPMax;
+			s_pHealthBar.localScale = new Vector3(fHealthPercent, 1.0f, 1.0f);
+
+			s_pHealthBarValue.text = string.Format("{0}/{1}", fCurrentHP, fHPMax);
+		}
+	}
+
 	public void ToggleSelect()
 	{
 		m_pCharacterBUS.Selected = !m_pCharacterBUS.Selected;
@@ -72,6 +110,8 @@ public class VisualCharacter : MonoBehaviour
 			if (m_pNavMeshAgent.enabled)
 				m_pNavMeshAgent.SetDestination(transform.position);
 		}
+
+		UpdateHealthBar();
 	}
 
 
@@ -79,6 +119,7 @@ public class VisualCharacter : MonoBehaviour
 
 	public void AttackAnim()
 	{
+		m_pAttackAnim.Rewind();
 		m_pAttackAnim.Play();
 	}
 

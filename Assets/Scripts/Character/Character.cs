@@ -13,6 +13,7 @@ public class Character
 	}
 
 	public Action OnHitTaken; //Visual character can register to this event
+	public Action OnHealthChanged;
 	public Action OnDeath;
 
 	#endregion
@@ -35,6 +36,7 @@ public class Character
 
 	private int m_iLvl = 1;
 	private int m_iHPMax = 50;
+	private int m_iLastHPChange = 0;
 	private int m_iHP = 50;
 	private int m_iMPMax = 10;
 	private int m_iMP = 10;
@@ -100,17 +102,25 @@ public class Character
 
 	public void Heal(int iHeal)
 	{
-		Debug.Log("Heal received");
+		if (m_iHP + iHeal > m_iHPMax)
+			iHeal = (m_iHPMax - m_iHP);
+
 		m_iHP += iHeal;
 
-		if (m_iHP > m_iHPMax)
-			m_iHP = m_iHPMax;
+		m_iLastHPChange = iHeal;
+
+		OnHealthChanged();
 	}
 
 	public void Damage(int iDamages)
 	{
-		Debug.Log("Damages received");
-		m_iHP -= (iDamages - m_pInventory.EquipedArmor.Def);
+		iDamages -= m_pInventory.EquipedArmor.Def;
+		if (iDamages < 0)
+			iDamages = 0;
+
+		m_iLastHPChange = -iDamages;
+
+		m_iHP -= iDamages;
 
 		if (m_iHP <= 0)
 		{
@@ -118,6 +128,8 @@ public class Character
 			m_bDead = true;
 			OnDeath();
 		}
+
+		OnHealthChanged();
 	}
 
 	#endregion Methods
@@ -153,10 +165,7 @@ public class Character
 
 	public string Name
 	{
-		get
-		{
-			return m_pName;
-		}
+		get { return m_pName; }
 	}
 
 	public int Level
@@ -177,6 +186,11 @@ public class Character
 	public int CurrentMP
 	{
 		get { return m_iMP; }
+	}
+
+	public int LastHPChange
+	{
+		get { return m_iLastHPChange; }
 	}
 
 	public int MPMax
@@ -250,5 +264,6 @@ public class Character
 			m_bSelected = value;
 		}
 	}
+
 	#endregion Setters/Getters
 }
