@@ -23,7 +23,7 @@ public abstract class ManaPanel : MonoBehaviour
 
 #region Variables (private)
 
-	static private List<VisualCharacter> s_pCharacters = null;
+	static private List<VisualHero> s_pCharacters = null;
 
 	private bool m_bOpened = false;
 	
@@ -32,7 +32,7 @@ public abstract class ManaPanel : MonoBehaviour
 	
 	static public void S_Initialize()
 	{
-		s_pCharacters = GameManager.Inst.CharManager.VisualCharactersList;
+		s_pCharacters = GameManager.Inst.CharManager.VisualHeroesList;
 	}
 
 	virtual public void Initialize() { }
@@ -82,7 +82,7 @@ public abstract class ManaPanel : MonoBehaviour
 
 #region Getters/Setters
 
-	protected VisualCharacter CurrentPageChar
+	protected VisualHero CurrentPageChar
 	{
 		get { return s_pCharacters[m_iCurrentPage]; }
 	}

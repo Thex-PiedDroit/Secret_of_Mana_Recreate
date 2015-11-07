@@ -4,12 +4,6 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-#region Variables (public)
-
-	
-	
-	#endregion
-	
 #region Variables (private)
 
 	static private GameManager s_pInst = null;

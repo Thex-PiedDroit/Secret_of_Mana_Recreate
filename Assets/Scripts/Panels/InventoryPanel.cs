@@ -103,7 +103,7 @@ public class InventoryPanel : ManaPanel
 		m_pCurrentPageItemsList = m_pItemsLists[m_iCurrentPage];
 		m_pCurrentPageIconsList = m_pIconsLists[m_iCurrentPage];
 
-		VisualCharacter pCurrentChar = CurrentPageChar;
+		VisualHero pCurrentChar = CurrentPageChar;
 		pName.text = pCurrentChar.Name;
 
 		List<Item> pCurrentCharInv = pCurrentChar.Inv;

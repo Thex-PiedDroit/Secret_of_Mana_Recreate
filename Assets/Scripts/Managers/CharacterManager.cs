@@ -7,9 +7,9 @@ public class CharacterManager
 {
 #region Variables (private)
 
-	private List<VisualCharacter> m_pHeroesPRES = null;
-	private List<Character> m_pHeroesBUS = null;
-	private Character m_pSelectedHero = null;
+	private List<VisualHero> m_pHeroesPRES = null;
+	private List<Hero> m_pHeroesBUS = null;
+	private Hero m_pSelectedHero = null;
 	private Transform pCharactersContainer = null;
 
 	private bool m_bPaused = false;
@@ -25,14 +25,14 @@ public class CharacterManager
 		Item.S_Initialize();
 
 		pCharactersContainer = GameObject.Find("Heroes").transform;
-		m_pHeroesBUS = new List<Character>(3);
-		m_pHeroesBUS.Add(new Character("Lucia", Vector3.zero, Character.Side.GoodGuys));
-		m_pHeroesBUS.Add(new Character("Richard", Vector3.one, Character.Side.GoodGuys));
-		m_pHeroesBUS.Add(new Character("Nataly", -Vector3.one, Character.Side.GoodGuys));
+		m_pHeroesBUS = new List<Hero>(3);
+		m_pHeroesBUS.Add(new Hero("Lucia", Vector3.zero, Character.Side.GoodGuys));
+		m_pHeroesBUS.Add(new Hero("Richard", Vector3.one, Character.Side.GoodGuys));
+		m_pHeroesBUS.Add(new Hero("Nataly", -Vector3.one, Character.Side.GoodGuys));
 		for (int i = 0; i < m_pHeroesBUS.Count; i++)
 			m_pHeroesBUS[i].OnDeath += DeadHeroHandle;
 
-		m_pHeroesPRES = new List<VisualCharacter>(3);
+		m_pHeroesPRES = new List<VisualHero>(3);
 
 		GameObject pRes = Resources.Load("Heroes/Hero") as GameObject;
 		CreateHero(pRes, m_pHeroesBUS[0], Weapon.WeaponType.Sword, Armor.ArmorType.Heavy);
@@ -43,10 +43,10 @@ public class CharacterManager
 		m_pHeroesBUS[0].Selected = true;
 	}
 
-	private void CreateHero(GameObject pRes, Character pHero, Weapon.WeaponType eWeaponType = Weapon.WeaponType.Default, Armor.ArmorType eArmorType = Armor.ArmorType.Default)
+	private void CreateHero(GameObject pRes, Hero pHero, Weapon.WeaponType eWeaponType = Weapon.WeaponType.Default, Armor.ArmorType eArmorType = Armor.ArmorType.Default)
 	{
 		GameObject pVisualHero = GameObject.Instantiate(pRes) as GameObject;
-		VisualCharacter pVisualChar = pVisualHero.GetComponent<VisualCharacter>();
+		VisualHero pVisualChar = pVisualHero.GetComponent<VisualHero>();
 
 		if (pVisualChar != null)
 		{
@@ -145,12 +145,12 @@ public class CharacterManager
 
 #region Getters/Setters
 
-	public Character SelectedHero
+	public Hero SelectedHero
 	{
 		get { return m_pSelectedHero; }
 	}
 
-	public List<VisualCharacter> VisualCharactersList
+	public List<VisualHero> VisualHeroesList
 	{
 		get { return m_pHeroesPRES; }
 	}

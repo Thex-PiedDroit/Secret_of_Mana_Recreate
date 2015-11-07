@@ -13,7 +13,6 @@ public class UIManager
 
 #region Variables (private)
 
-	//private Transform pCanvas = null;
 	private CharacterPanel pCharPanel = null;
 	private InventoryPanel pInvPanel = null;
 	private GameObject pHealthBar = null;

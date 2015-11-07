@@ -23,24 +23,9 @@ public class CharacterPanel : ManaPanel
 	
 	#endregion
 
-	//override public void Initialize()
-	//{
-	//	base.Initialize();
-
-	//	m_pOpenButton = "CharacPanel";
-	//	pName = GameObject.Find("CharName").GetComponent<Text>();
-	//	pLevel = GameObject.Find("LevelValue").GetComponent<Text>();
-	//	pHP = GameObject.Find("HPValue").GetComponent<Text>();
-	//	pMP = GameObject.Find("MPValue").GetComponent<Text>();
-	//	pAtk = GameObject.Find("AtkValue").GetComponent<Text>();
-	//	pAtkBonus = GameObject.Find("AtkBonusValue").GetComponent<Text>();
-	//	pDef = GameObject.Find("DefValue").GetComponent<Text>();
-	//	pDefBonus = GameObject.Find("DefBonusValue").GetComponent<Text>();
-	//}
-
 	override public void Refresh()
 	{
-		VisualCharacter pCurrentChar = CurrentPageChar;
+		VisualHero pCurrentChar = CurrentPageChar;
 
 		pName.text = pCurrentChar.Name;
 		pLevel.text = pCurrentChar.LevelText;
