@@ -39,7 +39,7 @@ public class VisualHero : VisualCharacter
 	
 	override public void Update()
 	{
-		if (!m_bPause)
+		if (!m_bPause && m_pHeroBUS.IsAlive)
 		{
 			if (m_pHeroBUS.Selected)
 			{
@@ -50,10 +50,6 @@ public class VisualHero : VisualCharacter
 			else	// Keep logic Character's data up to date if navMeshAgent driven
 			{
 				base.Update();
-				//if (m_pHeroBUS.Destination != m_pNavMeshAgent.destination)
-				//	m_pNavMeshAgent.SetDestination(m_pHeroBUS.Destination);
-				//m_pHeroBUS.Forward = transform.forward;
-				//m_pHeroBUS.Position = transform.position;
 			}
 		}
 	}

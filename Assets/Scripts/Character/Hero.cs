@@ -4,13 +4,9 @@ using System.Collections;
 
 public class Hero : Character
 {
-	#region Variables (public)
-
-	public Action OnDeath;
-	
-	#endregion
-	
 	#region Variables (private)
+
+	private float m_fFollowDist = 2.0f;
 
 	private int m_iLvl = 1;
 	private int m_iMPMax = 10;
@@ -67,15 +63,6 @@ public class Hero : Character
 
 		else
 			m_tDestination = m_tPosition;
-	}
-
-
-	public override void Damage(int iDamages)
-	{
-		base.Damage(iDamages);
-
-		if (m_bDead)
-			OnDeath();
 	}
 
 	#endregion Methods

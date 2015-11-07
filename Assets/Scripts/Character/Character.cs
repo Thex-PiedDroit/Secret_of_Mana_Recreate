@@ -15,6 +15,7 @@ public class Character
 
 	public Action OnAttack; //Visual character can register to this event
 	public Action OnHealthChanged;
+	public Action OnDeath;
 
 	#endregion
 
@@ -27,7 +28,6 @@ public class Character
 	protected Inventory m_pInventory = null;
 
 	protected float m_fSpeed = 10.0f;
-	protected float m_fFollowDist = 2.0f;
 
 	protected bool m_bDead = false;
 
@@ -71,7 +71,8 @@ public class Character
 
 	virtual public void Damage(int iDamages)
 	{
-		iDamages -= m_pInventory.EquipedArmor.Def;
+		int iDmgRedux = m_iDef + (m_pInventory.EquipedArmor != null ? m_pInventory.EquipedArmor.Def : 0);
+		iDamages -= iDmgRedux;
 		if (iDamages < 0)
 			iDamages = 0;
 
@@ -83,6 +84,7 @@ public class Character
 		{
 			m_iHP = 0;
 			m_bDead = true;
+			OnDeath();
 		}
 
 		OnHealthChanged();

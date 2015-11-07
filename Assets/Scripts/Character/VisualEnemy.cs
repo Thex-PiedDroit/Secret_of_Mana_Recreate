@@ -4,17 +4,9 @@ using System.Collections.Generic;
 
 public class VisualEnemy : VisualCharacter
 {
-	#region Variables (public)
-
-	[SerializeField]
-	private Transform m_pHealthBar = null;
-	
-	#endregion
-	
-	#region Variables (private)
+#region Variables (private)
 
 	private Enemy m_pEnemyBUS = null;
-	static private Hero s_pActiveHero = null;
 	
 	#endregion
 
@@ -25,16 +17,17 @@ public class VisualEnemy : VisualCharacter
 		m_pEnemyBUS = pCharacter as Enemy;
 	}
 
-	override public void Update()
+	public override void Update()
 	{
-		base.Update();
-	}
+		if (!m_bPause && m_pEnemyBUS.IsAlive)
+		{
+			base.Update();
 
+			if (m_pRenderer.isVisible)
+				m_pEnemyBUS.Update();
+		}
 
-
-
-	static public Hero ActiveHero
-	{
-		set { s_pActiveHero = value; }
+		else if (!m_pEnemyBUS.IsAlive && !m_pRenderer.isVisible)	// If dead and out of screen
+			Destroy(gameObject);
 	}
 }

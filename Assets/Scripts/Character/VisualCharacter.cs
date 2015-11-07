@@ -10,10 +10,14 @@ public class VisualCharacter : MonoBehaviour
 	[SerializeField]
 	protected NavMeshAgent m_pNavMeshAgent = null;
 	[SerializeField]
-	private Renderer m_pRenderer = null;
+	private Rigidbody m_pRigidBody = null;
+	[SerializeField]
+	protected Renderer m_pRenderer = null;
 
 	[SerializeField]
 	private FloatingDamage pFloatingDamageRef = null;
+	[SerializeField]
+	private float m_fRagdollThrowForce = 10.0f;
 	
 	#endregion
 
@@ -62,22 +66,49 @@ public class VisualCharacter : MonoBehaviour
 		m_pCharacterBUS = pCharacter;
 		m_pCharacterBUS.OnAttack += AttackAnim; //this is how you register for an event
 		m_pCharacterBUS.OnHealthChanged += CreateFloatingDamage;
+		m_pCharacterBUS.OnDeath += UpdateNPCHealthBar;
+		m_pCharacterBUS.OnDeath += BodyRagdoll;
 		transform.position = m_pCharacterBUS.Position;
+	}
+
+	void BodyRagdoll()
+	{
+		m_pNavMeshAgent.enabled = false;
+
+		if (m_pAttackAnim != null)
+			m_pAttackAnim.Stop();
+
+		float x = UnityEngine.Random.Range(-0.5f, 0.5f);
+		float z = UnityEngine.Random.Range(-0.5f, 0.5f);
+		Vector3 tThrowDir = new Vector3(x, 1.0f, z).normalized;
+
+		m_pRigidBody.useGravity = true;
+		m_pRigidBody.constraints = RigidbodyConstraints.None;
+		m_pRigidBody.velocity += (tThrowDir * m_fRagdollThrowForce);
+		float fRotateSpeed = Random.Range(1.0f, 5.0f);
+		m_pRigidBody.angularVelocity += (Random.insideUnitSphere * fRotateSpeed);
 	}
 	
 	virtual public void OnDestroy()
 	{
 		m_pCharacterBUS.OnAttack -= AttackAnim; //unregister on destroy to avoid any null exceptions
 		m_pCharacterBUS.OnHealthChanged -= CreateFloatingDamage;
+		m_pCharacterBUS.OnDeath -= UpdateNPCHealthBar;
+		m_pCharacterBUS.OnDeath -= BodyRagdoll;
 	}
 
 	virtual public void Update()
 	{
-		if (!m_bPause)
+		if (!m_bPause && m_pCharacterBUS.IsAlive)
 		{
 			if (m_pCharacterBUS.Destination != m_pNavMeshAgent.destination)
 				m_pNavMeshAgent.SetDestination(m_pCharacterBUS.Destination);
-			m_pCharacterBUS.Forward = transform.forward;
+
+			if (m_pNavMeshAgent.hasPath)
+				m_pCharacterBUS.Forward = transform.forward;
+			else
+				transform.forward = m_pCharacterBUS.Forward;
+
 			m_pCharacterBUS.Position = transform.position;
 
 			UpdateNPCHealthBar();
@@ -89,7 +120,7 @@ public class VisualCharacter : MonoBehaviour
 		float fCurrentHP = m_pCharacterBUS.CurrentHP;
 		float fHPMax = m_pCharacterBUS.HPMax;
 
-		if (m_pRenderer.isVisible && fCurrentHP != fHPMax)
+		if (m_pCharacterBUS.IsAlive && m_pRenderer.isVisible && fCurrentHP != fHPMax)
 		{
 			float fHealthPercent = fCurrentHP / fHPMax;
 			Transform pHealthBarRed = m_pNPCHealthBar.transform.GetChild(0);

@@ -27,7 +27,7 @@ public class VisualArrow : MonoBehaviour
 
 	void OnCollisionEnter(Collision tCollider)
 	{
-		VisualCharacter tHitCharPRES = tCollider.transform.parent.gameObject.GetComponent<VisualCharacter>();
+		VisualCharacter tHitCharPRES = tCollider.gameObject.GetComponent<VisualCharacter>();
 		Character tVisualChar = tHitCharPRES != null ? tHitCharPRES.CharacterBUS : null;
 
 		m_pArrowBUS.OnCollisionEnter(tVisualChar);

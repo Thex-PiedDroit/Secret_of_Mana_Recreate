@@ -12,6 +12,8 @@ public class CharacterManager
 	private Hero m_pSelectedHero = null;
 	private VisualHero m_pSelectedHeroPRES = null;
 	private Transform pCharactersContainer = null;
+	private Transform pEnemiesContainer = null;
+	private VisualEnemy[] pEnemiesPRES = null;
 
 	private bool m_bPaused = false;
 	private bool m_bGameOver = false;
@@ -31,7 +33,9 @@ public class CharacterManager
 		m_pHeroesBUS.Add(new Hero("Lucia", Vector3.zero, Character.Side.GoodGuys));
 		m_pHeroesBUS.Add(new Hero("Richard", Vector3.one, Character.Side.GoodGuys));
 		m_pHeroesBUS.Add(new Hero("Nataly", -Vector3.one, Character.Side.GoodGuys));
-		for (int i = 0; i < m_pHeroesBUS.Count; i++)
+
+		int i = 0;
+		for (i = 0; i < m_pHeroesBUS.Count; i++)
 			m_pHeroesBUS[i].OnDeath += DeadHeroHandle;
 
 		m_pHeroesPRES = new List<VisualHero>(3);
@@ -42,6 +46,17 @@ public class CharacterManager
 		CreateHero(pRes, m_pHeroesBUS[2], Weapon.WeaponType.Staff, Armor.ArmorType.Light);
 
 		SelectHero(0);
+
+
+		pEnemiesContainer = GameObject.Find("Enemies").transform;
+		pEnemiesPRES = pEnemiesContainer.GetComponentsInChildren<VisualEnemy>();
+
+		for (i = 0; i < pEnemiesPRES.Length; i++)
+		{
+			VisualEnemy pVisualEnemy = pEnemiesPRES[i];
+			GameObject pGameObject = pVisualEnemy.gameObject;
+			pVisualEnemy.Initialize(new Enemy(pGameObject.name, pGameObject.transform.position, Character.Side.BadGuys));
+		}
 	}
 
 	private void CreateHero(GameObject pRes, Hero pHero, Weapon.WeaponType eWeaponType = Weapon.WeaponType.Default, Armor.ArmorType eArmorType = Armor.ArmorType.Default)
@@ -119,6 +134,8 @@ public class CharacterManager
 		}
 
 		m_bGameOver = bGameOver;
+		if (m_bGameOver)
+			Debug.Log("Game Over. Purchase the awesome Game Over splash screen for only 5.99USD!");
 	}
 
 	public void SelectHero(int iHeroID)
@@ -131,7 +148,7 @@ public class CharacterManager
 			m_pSelectedHero = m_pHeroesBUS[iHeroID];
 			m_pSelectedHeroPRES = m_pHeroesPRES[iHeroID];
 			m_pHeroesPRES[iHeroID].ToggleSelect();
-			VisualEnemy.ActiveHero = m_pSelectedHero;
+			Enemy.ActiveHero = m_pSelectedHero;
 		}
 	}
 
@@ -142,8 +159,11 @@ public class CharacterManager
 	{
 		m_bPaused = !m_bPaused;
 
-		for (int i = 0; i < m_pHeroesPRES.Count; i++)
+		int i = 0;
+		for (i = 0; i < m_pHeroesPRES.Count; i++)
 			m_pHeroesPRES[i].TogglePause();
+		for (i = 0; i < pEnemiesPRES.Length; i++)
+			pEnemiesPRES[i].TogglePause();
 	}
 
 	#endregion CallBacks
