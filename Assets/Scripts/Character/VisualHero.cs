@@ -4,13 +4,7 @@ using System.Collections;
 
 public class VisualHero : VisualCharacter
 {
-	#region Variables (public)
-	
-	
-	
-	#endregion
-	
-	#region Variables (private)
+#region Variables (private)
 	
 	private Hero m_pHeroBUS = null;
 
@@ -44,10 +38,11 @@ public class VisualHero : VisualCharacter
 			if (m_pHeroBUS.Selected)
 			{
 				transform.forward = m_pHeroBUS.Forward;
-				//transform.position = m_pHeroBUS.Position;
-				transform.Translate(m_pHeroBUS.Position - transform.position, Space.World);
-				//m_pRigidBody.position = m_pHeroBUS.Position;
-				
+
+				NavMeshHit Hit;
+				NavMesh.SamplePosition(m_pHeroBUS.Position, out Hit, float.MaxValue, 1);
+				transform.position = Hit.position;
+				m_pHeroBUS.Position = Hit.position;		// Keep character within NavMesh walkable area
 			}
 
 			else	// Keep logic Character's data up to date if navMeshAgent driven
@@ -55,12 +50,6 @@ public class VisualHero : VisualCharacter
 				base.Update();
 			}
 		}
-	}
-
-	void LateUpdate()
-	{
-		//if (transform.position != m_pHeroBUS.Position)
-		//	m_pHeroBUS.Position = transform.position;
 	}
 
 	void UpdateHealthBar()
