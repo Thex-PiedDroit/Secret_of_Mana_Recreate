@@ -8,7 +8,7 @@ public class Enemy : Character
 	static private Hero s_pActiveHero = null;
 
 	private float m_fAttackRange = 3.0f;
-	private float m_fSightRange = 5.0f;
+	private float m_fSightRange = 15.0f;
 
 	private float m_fTimeBetweenAttacks = 1.0f;
 	private float m_fAttackTimer = 0.0f;

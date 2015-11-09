@@ -22,7 +22,7 @@ public class Arrow
 	{
 		m_tPos = tPos;
 		m_tSpawnPos = tPos;
-		m_tForward = tForward;
+		m_tForward = tForward.normalized;
 		m_iDamages = iDamages;
 		m_fMaxDist = fMaxDist;
 		m_eSide = eArrowSide;

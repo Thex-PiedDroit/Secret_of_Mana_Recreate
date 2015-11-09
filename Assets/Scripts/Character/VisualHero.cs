@@ -44,7 +44,10 @@ public class VisualHero : VisualCharacter
 			if (m_pHeroBUS.Selected)
 			{
 				transform.forward = m_pHeroBUS.Forward;
-				transform.position = m_pHeroBUS.Position;
+				//transform.position = m_pHeroBUS.Position;
+				transform.Translate(m_pHeroBUS.Position - transform.position, Space.World);
+				//m_pRigidBody.position = m_pHeroBUS.Position;
+				
 			}
 
 			else	// Keep logic Character's data up to date if navMeshAgent driven
@@ -52,6 +55,12 @@ public class VisualHero : VisualCharacter
 				base.Update();
 			}
 		}
+	}
+
+	void LateUpdate()
+	{
+		//if (transform.position != m_pHeroBUS.Position)
+		//	m_pHeroBUS.Position = transform.position;
 	}
 
 	void UpdateHealthBar()

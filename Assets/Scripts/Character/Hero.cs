@@ -6,7 +6,7 @@ public class Hero : Character
 {
 	#region Variables (private)
 
-	private float m_fFollowDist = 2.0f;
+	private float m_fFollowDist = 4.0f;
 
 	private int m_iLvl = 1;
 	private int m_iMPMax = 10;

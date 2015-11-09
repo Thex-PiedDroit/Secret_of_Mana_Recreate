@@ -21,7 +21,7 @@ public class Sword : Weapon
 	public Sword(Character pUser) : base(pUser, WeaponType.Sword)
 	{
 		m_iTargetsLayer = ~(LayerMask.GetMask("Heroes"));
-		m_fRange = 2.0f;
+		m_fRange = 3.0f;
 		m_iAtk = 5;
 	}
 

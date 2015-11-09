@@ -17,12 +17,10 @@ public class Inventory
 	{
 		pItems.Add(pItem);
 
-		/* <Tests purposes only> */
-		if (pItem.ItmType == Item.ItemType.Weapon)
+		if (pItem.ItmType == Item.ItemType.Weapon && pEquipedWeapon == null)
 			pEquipedWeapon = pItem as Weapon;
-		else if (pItem.ItmType == Item.ItemType.Armor)
+		else if (pItem.ItmType == Item.ItemType.Armor && pEquipedArmor == null)
 			pEquipedArmor = pItem as Armor;
-		/* </Tests> */
 	}
 
 	public void RemoveItem(Item pItem)

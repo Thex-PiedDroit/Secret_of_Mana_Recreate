@@ -19,15 +19,15 @@ public class VisualEnemy : VisualCharacter
 
 	public override void Update()
 	{
-		if (!m_bPause && m_pEnemyBUS.IsAlive)
+		if (!m_bPause)
 		{
 			base.Update();
 
-			if (m_pRenderer.isVisible)
+			if (m_pRenderer.isVisible && m_pEnemyBUS.IsAlive)
 				m_pEnemyBUS.Update();
 		}
 
-		else if (!m_pEnemyBUS.IsAlive && !m_pRenderer.isVisible)	// If dead and out of screen
+		if (!m_pEnemyBUS.IsAlive && !m_pRenderer.isVisible)	// If dead and out of screen
 			Destroy(gameObject);
 	}
 }

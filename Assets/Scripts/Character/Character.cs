@@ -44,6 +44,8 @@ public class Character
 	private int m_iHP = 50;
 	private int m_iAtk = 5;
 	private int m_iDef = 0;
+
+	private bool m_bDeadHit = false;
 	
 	#endregion
 
@@ -52,6 +54,7 @@ public class Character
 		m_pInventory = new Inventory();
 		m_pName = pName;
 		m_tPosition = tPosition;
+		m_tDestination = m_tPosition;
 		m_eSide = eSide;
 	}
 
@@ -59,35 +62,44 @@ public class Character
 
 	public void Heal(int iHeal)
 	{
-		if (m_iHP + iHeal > m_iHPMax)
-			iHeal = (m_iHPMax - m_iHP);
+		if (!m_bDead)
+		{
+			if (m_iHP + iHeal > m_iHPMax)
+				iHeal = (m_iHPMax - m_iHP);
 
-		m_iHP += iHeal;
+			m_iHP += iHeal;
 
-		m_iLastHPChange = iHeal;
+			m_iLastHPChange = iHeal;
 
-		OnHealthChanged();
+			OnHealthChanged();
+		}
 	}
 
 	virtual public void Damage(int iDamages)
 	{
-		int iDmgRedux = m_iDef + (m_pInventory.EquipedArmor != null ? m_pInventory.EquipedArmor.Def : 0);
-		iDamages -= iDmgRedux;
-		if (iDamages < 0)
-			iDamages = 0;
-
-		m_iLastHPChange = -iDamages;
-
-		m_iHP -= iDamages;
-
-		if (m_iHP <= 0)
+		if (!m_bDead)
 		{
-			m_iHP = 0;
-			m_bDead = true;
-			OnDeath();
+			int iDmgRedux = m_iDef + (m_pInventory.EquipedArmor != null ? m_pInventory.EquipedArmor.Def : 0);
+			iDamages -= iDmgRedux;
+			if (iDamages < 0)
+				iDamages = 0;
+
+			m_iLastHPChange = -iDamages;
+
+			m_iHP -= iDamages;
+
+			if (m_iHP <= 0)
+			{
+				m_iHP = 0;
+				m_bDead = true;
+				OnDeath();
+			}
+
+			OnHealthChanged();
 		}
 
-		OnHealthChanged();
+		else
+			m_bDeadHit = true;
 	}
 
 	#endregion Methods
@@ -104,6 +116,12 @@ public class Character
 	public bool IsAlive
 	{
 		get { return !m_bDead;}
+	}
+
+	public bool DeadHit
+	{
+		set { m_bDeadHit = value; }
+		get { return m_bDeadHit; }
 	}
 
 	public Inventory Inv

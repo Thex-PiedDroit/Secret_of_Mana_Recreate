@@ -10,7 +10,7 @@ public class VisualCharacter : MonoBehaviour
 	[SerializeField]
 	protected NavMeshAgent m_pNavMeshAgent = null;
 	[SerializeField]
-	private Rigidbody m_pRigidBody = null;
+	protected Rigidbody m_pRigidBody = null;
 	[SerializeField]
 	protected Renderer m_pRenderer = null;
 
@@ -67,23 +67,28 @@ public class VisualCharacter : MonoBehaviour
 		m_pCharacterBUS.OnAttack += AttackAnim; //this is how you register for an event
 		m_pCharacterBUS.OnHealthChanged += CreateFloatingDamage;
 		m_pCharacterBUS.OnDeath += UpdateNPCHealthBar;
-		m_pCharacterBUS.OnDeath += BodyRagdoll;
+		m_pCharacterBUS.OnDeath += EnableRagdoll;
+		m_pCharacterBUS.OnDeath += ThrowRagdoll;
 		transform.position = m_pCharacterBUS.Position;
 	}
 
-	void BodyRagdoll()
+	void EnableRagdoll()
 	{
 		m_pNavMeshAgent.enabled = false;
 
 		if (m_pAttackAnim != null)
 			m_pAttackAnim.Stop();
 
+		m_pRigidBody.useGravity = true;
+		m_pRigidBody.constraints = RigidbodyConstraints.None;
+	}
+
+	void ThrowRagdoll()
+	{
 		float x = UnityEngine.Random.Range(-0.5f, 0.5f);
 		float z = UnityEngine.Random.Range(-0.5f, 0.5f);
 		Vector3 tThrowDir = new Vector3(x, 1.0f, z).normalized;
-
-		m_pRigidBody.useGravity = true;
-		m_pRigidBody.constraints = RigidbodyConstraints.None;
+		
 		m_pRigidBody.velocity += (tThrowDir * m_fRagdollThrowForce);
 		float fRotateSpeed = Random.Range(1.0f, 5.0f);
 		m_pRigidBody.angularVelocity += (Random.insideUnitSphere * fRotateSpeed);
@@ -94,7 +99,8 @@ public class VisualCharacter : MonoBehaviour
 		m_pCharacterBUS.OnAttack -= AttackAnim; //unregister on destroy to avoid any null exceptions
 		m_pCharacterBUS.OnHealthChanged -= CreateFloatingDamage;
 		m_pCharacterBUS.OnDeath -= UpdateNPCHealthBar;
-		m_pCharacterBUS.OnDeath -= BodyRagdoll;
+		m_pCharacterBUS.OnDeath -= EnableRagdoll;
+		m_pCharacterBUS.OnDeath -= ThrowRagdoll;
 	}
 
 	virtual public void Update()
@@ -112,6 +118,12 @@ public class VisualCharacter : MonoBehaviour
 			m_pCharacterBUS.Position = transform.position;
 
 			UpdateNPCHealthBar();
+		}
+
+		else if (!m_bPause && m_pCharacterBUS.DeadHit)
+		{
+			ThrowRagdoll();
+			m_pCharacterBUS.DeadHit = false;
 		}
 	}
 
@@ -157,14 +169,16 @@ public class VisualCharacter : MonoBehaviour
 
 		if (m_bPause)
 		{
+			m_pNPCHealthBar.SetActive(false);
 			tNavMeshAgentVelocityAtPause = m_pNavMeshAgent.velocity;
 			tNavMeshAgentDestAtPause = m_pNavMeshAgent.destination;
 
 			m_pNavMeshAgent.enabled = false;
 		}
 
-		else
+		else if (m_pCharacterBUS.IsAlive)
 		{
+			UpdateNPCHealthBar();
 			m_pNavMeshAgent.enabled = true;
 
 			m_pNavMeshAgent.destination = tNavMeshAgentDestAtPause;
