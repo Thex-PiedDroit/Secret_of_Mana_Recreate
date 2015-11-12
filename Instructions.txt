@@ -1,0 +1,95 @@
+Hi Maxime,
+
+New assignment is related to "Secret of Mana"
+
+https://en.wikipedia.org/wiki/Secret_of_Mana
+https://www.youtube.com/watch?v=_TVU4al3Apc
+
+
+I want you to create following classes, with the guidelines written beneath them:
+
+GameManager
+- inherits from MonoBehaviour
+- creates other Managers
+- hold all static information
+- holds Inventory
+- creates visual prefabs based on info from other Managers
+
+CharacterManager
+- not Monobehaviour !!!
+- list of Character (or 3 distinct members)
+- list of Enemies
+- selected character
+
+UIManager or GUIManager
+- not Monobehaviour !!!
+- responsible to open panels
+- keeps track of panels (members)
+- initialize panels
+
+ManaPanel
+- inherits from MonoBehaviour
+- abstract
+-defines method for panels (initialise, refresh,...)
+
+Character
+- not MonoBehaviour !!!
+- contains all infor related to chars (name, hp, mp, weap, stats, level, att, def,...)
+
+Item
+- not MonoBehaviour
+- abstract
+- contains enum ItemType (and member of that type)
+- amount
+
+Armor
+- not mono
+- inherits from Item
+- increases Character defence
+- contains enum ArmorType (and member of that type)
+
+Weapon
+- not mono
+- inherits from Item
+- abstract
+- holds common members
+
+Sword / Bow / Staff
+- not mono
+- inherits from weapon
+- contains specific weapon behaviour
+- increase ATT stat of Character (not staff)
+
+Inventory
+- not mono
+- contains List of Items 
+
+InventoryPanel
+- inherits from ManaPanel
+- opens with pressing i (or button on HUD)
+- shows me content of my inventory (just colored squares good enough, do not care about visuals)
+
+CharacterPanel
+- inherits from ManaPanel
+- opens with pressing c (or button on HUD)
+- shows character stats and bonus from items
+
+VisualCharacter
+- mono
+- member of Character (link from UI to logic)
+- single model (cube or capsule)
+
+HUD
+- mono
+- get information from Managers and updates hud accordingly
+
+
+That is for structure of the code, what I want now is 1 level I can walk through. I want 3 characters I can switch between: 1 active character at any given time and other 2 always follow.
+Each character has a weapon, Sword is melee, Bow is ranged and Staff is healing (not like game). I don't need to see the weapons, only when I open CharacterPanel do I want to know what character has (just text good enough).
+Enemies are not needed from start, if time you can add them in. Enemies are Character also, just some different Behaviour (at that time turn Character into abstract class that holds the data and create 2 separate classes 1 for player character and 1 for enemies). Movement should be using arrows. Camera always centered on active character. Make sure all this work before spending too much time on level.
+
+
+Questions:
+- I am not sure about what the VisualCharacter class does: does it take the inputs and then calls the methods within Character (second question related: does the Character object take care of the logic indeed?) and updates the health and power bar? ==> Visual Character reads properties from the logic object and updates the UI accordingly (each update can read property and update the information or can be Event driven, where UI register to logic Event and logic triggers event when value changes)
+- When you say that the other managers don't inherit from monobehaviour, do the inherit from GameManager instead? I am not sure I understand why that would be ==> They inherit from nothing, they are pure code class. 
+- Regarding the game, do you ultimately want the followers to attack by themselves like in the original game or just follow? ==> They do not attack, they just follow and you can switch between and attack with the active one.
